@@ -7,6 +7,7 @@
 
     {{-- CSS GLOBAL --}}
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
     <style>
         /* ====== NAVBAR ====== */
         nav {
@@ -45,12 +46,32 @@
             padding-bottom: 3px;
         }
 
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-icon {
+             color: white;
+             font-size: 18px;
+        }
+
         .search-box {
-            padding: 6px 10px;
-            border-radius: 6px;
+            background: transparent;
             border: none;
+            border-bottom: 1px solid #666;
+            padding: 6px 0;
+            color: white;
+            width: 200px;
             outline: none;
         }
+
+        .search-box::placeholder {
+            color: white;
+            opacity: 0.7;
+        }
+
 
         /* ====== CONTENT ====== */
         .content {
@@ -60,23 +81,29 @@
 
         /* ====== FOOTER ====== */
         footer {
-            background: #111;
-            color: white;
+            background-image: url('/images/footer-bg.jpg'); 
+            background-size: cover;
+            background-position: center;
+            padding: 25px 0;
+            color: #fff;
+            font-size: 18px;
             text-align: center;
-            padding: 15px;
+            font-weight: 500;
+            text-shadow: 0 0 5px rgba(0,0,0,0.8);
             margin-top: 30px;
         }
     </style>
 </head>
+
 <body>
 
     {{-- NAVBAR --}}
     <nav>
-        <div style="display:flex; align-items:center; gap:10px;">
-            <img src="{{ asset('images/logo.png') }}" style="height:40px;">
-            <span style="font-size:20px; font-weight:600;">Swim Base</span>
-        </div>
-
+            <div style="display:flex; align-items:center; gap:10px;">
+        <img src="{{ asset('images/logo.png') }}" style="height:40px;">
+        <span style="font-size:20px; font-weight:600;">Swim Base</span>
+    </div>
+    
         <ul>
             <li><a href="/" class="{{ Request::is('/') ? 'active-link' : '' }}">Beranda</a></li>
             <li><a href="/atlet" class="{{ Request::is('atlet') ? 'active-link' : '' }}">Atlet</a></li>
@@ -92,14 +119,14 @@
         </div>
     </nav>
 
-    {{-- SLOT KONTEN --}}
+    {{-- KONTEN --}}
     <div class="content">
         @yield('content')
     </div>
 
     {{-- FOOTER --}}
     <footer>
-        &copy; {{ date('Y') }} Swim Base - All Rights Reserved
+        Copyright © {{ date('Y') }} Swim Base. All Rights Reserved
     </footer>
 
     {{-- JS GLOBAL --}}
