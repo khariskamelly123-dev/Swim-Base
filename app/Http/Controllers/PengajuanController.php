@@ -30,7 +30,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('atlet', AtletController::class);
 
 
-
     // ================================
     //           PENGAJUAN
     // ================================
@@ -40,7 +39,7 @@ Route::middleware(['auth'])->group(function () {
         [PengajuanController::class, 'formEdit'])
         ->name('pengajuan.formEdit');
 
-    // POST kirim pengajuan edit atlet
+    // KIRIM pengajuan edit
     Route::post('/pengajuan/edit/{id}', 
         [PengajuanController::class, 'pengajuanEdit'])
         ->name('pengajuan.edit');
@@ -51,7 +50,7 @@ Route::middleware(['auth'])->group(function () {
         [PengajuanController::class, 'formHapus'])
         ->name('pengajuan.formHapus');
 
-    // POST kirim pengajuan hapus atlet
+    // KIRIM pengajuan hapus
     Route::post('/pengajuan/hapus/{id}', 
         [PengajuanController::class, 'pengajuanHapus'])
         ->name('pengajuan.hapus');
@@ -62,15 +61,15 @@ Route::middleware(['auth'])->group(function () {
         [PengajuanController::class, 'index'])
         ->name('pengajuan.index');
 
-// =============================
-// APPROVE & REJECT (SUPER ADMIN)
-// =============================
-Route::post('/pengajuan/{id}/approve', 
-    [PengajuanController::class, 'approve'])
-    ->name('pengajuan.approve');
 
-Route::post('/pengajuan/{id}/reject', 
-    [PengajuanController::class, 'reject'])
-    ->name('pengajuan.reject');
+    // =====================
+    // APPROVE / REJECT oleh SUPER ADMIN
+    // =====================
+    Route::post('/pengajuan/{id}/approve', 
+        [PengajuanController::class, 'approve'])
+        ->name('pengajuan.approve');
 
+    Route::post('/pengajuan/{id}/reject', 
+        [PengajuanController::class, 'reject'])
+        ->name('pengajuan.reject');
 });
