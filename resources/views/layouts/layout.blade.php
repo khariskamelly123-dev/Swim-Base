@@ -91,26 +91,27 @@
 <body>
 
     {{-- NAVBAR --}}
-    <nav>
-        <div style="display:flex; align-items:center; gap:10px;">
-            <img src="{{ asset('images/logo.png') }}" style="height:40px;">
-            <span style="font-size:20px; font-weight:600;">Swim Base</span>
-        </div>
+   <nav>
+    <div style="display:flex; align-items:center; gap:10px;">
+        <img src="{{ asset('images/logo.png') }}" style="height:40px;">
+        <span style="font-size:20px; font-weight:600;">Swim Base</span>
+    </div>
 
-        <ul>
-            <li><a href="/" class="{{ Request::is('/') ? 'active-link' : '' }}">Beranda</a></li>
-            <li><a href="/atlet" class="{{ Request::is('atlet') ? 'active-link' : '' }}">Atlet</a></li>
-            <li><a href="/statistik" class="{{ Request::is('statistik') ? 'active-link' : '' }}">Statistik</a></li>
-            <li><a href="/galeri" class="{{ Request::is('galeri') ? 'active-link' : '' }}">Galeri</a></li>
-            <li><a href="/prestasi" class="{{ Request::is('prestasi') ? 'active-link' : '' }}">Prestasi</a></li>
-            <li><a href="/login" class="{{ Request::is('login') ? 'active-link' : '' }}">Login</a></li>
-        </ul>
+    <ul>
+        <li><a href="/" class="{{ Request::is('/') ? 'active-link' : '' }}">Beranda</a></li>
+        <li><a href="/atlet" class="{{ Request::is('atlet') ? 'active-link' : '' }}">Atlet</a></li>
+        <li><a href="/statistik" class="{{ Request::is('statistik') ? 'active-link' : '' }}">Statistik</a></li>
+        <li><a href="/galeri" class="{{ Request::is('galeri') ? 'active-link' : '' }}">Galeri</a></li>
+        <li><a href="/prestasi" class="{{ Request::is('prestasi') ? 'active-link' : '' }}">Prestasi</a></li>
+        <li><a href="/login" class="{{ Request::is('login') ? 'active-link' : '' }}">Login</a></li>
+    </ul>
 
-        <div style="display: flex; align-items:center; gap:10px;">
-            <img src="{{ asset('images/search-icon.png') }}" style="height:18px;">
-            <input type="search" placeholder="Search" class="search-box">
-        </div>
-    </nav>
+    <div style="display: flex; align-items:center; gap:10px;">
+        <img src="{{ asset('images/search-icon.png') }}" style="height:18px;">
+        <input type="search" placeholder="Search" class="search-box">
+    </div>
+</nav>
+
 
     {{-- KONTEN TANPA WRAPPER PUTIH --}}
     @yield('content')
