@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+    
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Swim Base Login</title>
+    
+    @extends('layouts.layout')
+
+    @section('title', 'Login - Swim Base')
+
+    @section('content')
+    
     <style>
         * {
             box-sizing: border-box;
@@ -264,10 +271,6 @@
 </head>
 
 <body>
-    <nav>
-
-    </nav>
-
     <div class="container">
         <div class="welcome-text">
             <h1>Welcome to Swim Base!</h1>
@@ -313,3 +316,4 @@
 </body>
 
 </html>
+@endsection
