@@ -75,7 +75,7 @@
                 }
 
                 .login-box {
-                    background-color: rgba(0, 0, 0, 0.4);
+                    background-color: rgba(0, 0, 0, 0.545);
                     padding: 2rem;
                     border-radius: 16px;
                     margin-right: 150px;
@@ -296,7 +296,7 @@
 
                         <div class="options">
                             <label><input type="checkbox" /> Remember me</label>
-                            <a href="#" style="color:#aaa; text-decoration:none;">Forgot Password?</a>
+                            <a href="#" style="color:#2f98f4; text-decoration:none;">Forgot Password?</a>
                         </div>
 
                         <button type="submit" class="login-btn">Log in</button>
