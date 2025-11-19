@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,8 +54,8 @@
         }
 
         .search-icon {
-             color: white;
-             font-size: 18px;
+            color: white;
+            font-size: 18px;
         }
 
         .search-box {
@@ -81,15 +82,13 @@
 
         /* ====== FOOTER ====== */
         footer {
-            background-image: url('/images/footer-bg.jpg'); 
-            background-size: cover;
-            background-position: center;
-            padding: 25px 0;
-            color: #fff;
-            font-size: 18px;
+            padding: 10px;
+            color: #ffffff !important;
+            font-size: 20px;
             text-align: center;
-            font-weight: 500;
-            text-shadow: 0 0 5px rgba(0,0,0,0.8);
+            font-weight: 700;
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.9),
+                0 0 3px rgba(0, 0, 0, 0.7);
             margin-top: 30px;
         }
     </style>
@@ -99,11 +98,11 @@
 
     {{-- NAVBAR --}}
     <nav>
-            <div style="display:flex; align-items:center; gap:10px;">
-        <img src="{{ asset('images/logo.png') }}" style="height:40px;">
-        <span style="font-size:20px; font-weight:600;">Swim Base</span>
-    </div>
-    
+        <div style="display:flex; align-items:center; gap:10px;">
+            <img src="{{ asset('images/logo.png') }}" style="height:40px;">
+            <span style="font-size:20px; font-weight:600;">Swim Base</span>
+        </div>
+
         <ul>
             <li><a href="/" class="{{ Request::is('/') ? 'active-link' : '' }}">Beranda</a></li>
             <li><a href="/atlet" class="{{ Request::is('atlet') ? 'active-link' : '' }}">Atlet</a></li>
@@ -133,4 +132,5 @@
     <script src="{{ asset('js/app.js') }}"></script>
 
 </body>
+
 </html>
