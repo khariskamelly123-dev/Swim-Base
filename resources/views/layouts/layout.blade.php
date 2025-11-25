@@ -6,11 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Swim Base')</title>
 
-    {{-- CSS GLOBAL --}}
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
     <style>
-        /* ====== NAVBAR ====== */
+        /* NAVBAR */
         nav {
             background: #000;
             color: white;
@@ -53,11 +52,6 @@
             gap: 8px;
         }
 
-        .search-icon {
-            color: white;
-            font-size: 18px;
-        }
-
         .search-box {
             background: transparent;
             border: none;
@@ -73,14 +67,7 @@
             opacity: 0.7;
         }
 
-
-        /* ====== CONTENT ====== */
-        .content {
-            padding: 40px;
-            min-height: 70vh;
-        }
-
-        /* ====== FOOTER ====== */
+        /* FOOTER */
         footer {
             padding: 10px;
             color: #ffffff !important;
@@ -90,6 +77,13 @@
             text-shadow: 0 0 8px rgba(0, 0, 0, 0.9),
                 0 0 3px rgba(0, 0, 0, 0.7);
             margin-top: 30px;
+        }
+
+        /* HILANGKAN BACKGROUND PUTIH DEFAULT */
+        body {
+            background: transparent !important;
+            margin: 0;
+            padding: 0;
         }
     </style>
 </head>
@@ -118,17 +112,14 @@
         </div>
     </nav>
 
-    {{-- KONTEN --}}
-    <div class="content">
-        @yield('content')
-    </div>
+    {{-- KONTEN TANPA WRAPPER PUTIH --}}
+    @yield('content')
 
     {{-- FOOTER --}}
     <footer>
         Copyright © {{ date('Y') }} Swim Base. All Rights Reserved
     </footer>
 
-    {{-- JS GLOBAL --}}
     <script src="{{ asset('js/app.js') }}"></script>
 
 </body>
