@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PengajuanController;
 use App\Http\Controllers\AtletController;
+use App\Http\Controllers;
+use App\Http\Controllers\PrestasiController;
 
 
 // LOGIN
@@ -77,3 +79,15 @@ Route::post(
     [PengajuanController::class, 'reject']
 )
     ->name('pengajuan.reject');
+
+//PRESTASI
+Route::get('/prestasi', [PrestasiController::class, 'indexprestasi'])->name('prestasi');
+
+// GALERI
+
+Route::get('/', [PrestasiController::class, 'indexprestasi'])->name('prestasi');
+
+//ATLET1
+Route::get('/index', [Atlet1Controller::class, 'atlet1'])->name('atlet.index');
+
+
