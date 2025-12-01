@@ -1,17 +1,53 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PengajuanController;
 use App\Http\Controllers\AtletController;
 use App\Http\Controllers;
+use App\Http\Controllers\Atlet1Controller;
+use App\Http\Controllers\ClubLoginContoller;
 use App\Http\Controllers\PrestasiController;
+use App\Http\Controllers\adminController;
+use App\Http\Controllers\superadminController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LoginController;
+
+//langsung route redirect saat pertama kali buka web
+Route::get('/', function () {
+    return redirect('/welcome'); // ganti ke '/...' kalau ingin ke halaman lain
+});
+
+// DASHBOARD
+Route::get('/dashboard_user', [DashboardController::class, 'dashboard'])->name('dashboard_user');
+Route::get('/dashboard_afterlogin', [DashboardController::class, 'dashboard_afterlogin'])->name('dashboard_afterlogin');
 
 
-// LOGIN
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [LoginController::class, 'login'])->name('login.process');
-Route::post('/logout', [LoginController::class, 'logout'])->name('user.logout');
+
+// LOGIN SELECTION
+Route::get('/welcome', [LoginController::class, 'welcome_selection'])->name('welcome');
+
+// CLUB
+Route::get('/club_login', [ClubLoginContoller::class, 'club'])->name('club.login');
+Route::get('/regis_club', [ClubLoginContoller::class, 'regis_club'])->name('club.register');
+Route::post('/regis_club', [ClubLoginContoller::class, 'club_register'])->name('club.register.process');
+Route::post('/club_login_process', [ClubLoginContoller::class, 'club_login_process'])->name('club.login.process');
+Route::post('/club_logout', [ClubLoginContoller::class, 'club_logout'])->name('club.logout');
+
+
+// login admin
+
+Route::get('/admin_login', [adminController::class, 'admin'])->name('admin_login');
+
+// login super admin
+Route::get('/superadmin_login', [superadminController::class, 'superadmin'])->name('superadmin_login');
+
+
+// seko_univ
+Route::get('/login', [LoginController::class, 'seko_univ'])->name('login');
+Route::get('/schuniv_regis', [LoginController::class, 'regis_seko_univ'])->name('sekouniv_register');
+Route::post('/schuniv_regis', [LoginController::class, 'sekouniv_register'])->name('sekouniv.register.process');
+Route::post('/sekouniv_login_process', [LoginController::class, 'sekouniv_login_process'])->name('sekouniv.login.process');
+Route::post('/sekouniv_logout', [LoginController::class, 'sekouniv_logout'])->name('sekouniv.logout');
 
 // register
 Route::get('/register', function () {
@@ -82,10 +118,6 @@ Route::post(
 
 //PRESTASI
 Route::get('/prestasi', [PrestasiController::class, 'indexprestasi'])->name('prestasi');
-
-// GALERI
-
-Route::get('/', [PrestasiController::class, 'indexprestasi'])->name('prestasi');
 
 //ATLET1
 Route::get('/index', [Atlet1Controller::class, 'atlet1'])->name('atlet.index');
