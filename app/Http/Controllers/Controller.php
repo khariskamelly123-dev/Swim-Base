@@ -1,10 +1,10 @@
-<?php //tanda file php
+<?php
 
-namespace App\Http\Controllers; //menentukan namespace untuk kelas ini
+namespace App\Http\Controllers;
 
-use Illuminate\Http\Request; //mengimpor kelas Request dari framework Laravel
+use Illuminate\Http\Request;
 
-class Controller //mendefinisikan kelas Controller
+class Controller
 {
     //
 }

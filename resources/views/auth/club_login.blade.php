@@ -234,23 +234,26 @@
                 }
             }
         </style>
+    </head>
 
-    <div class="container">
+    <body>
+
+        <div class="container">
             <div class="welcome-text">
                 <h1>Welcome to Swim Base!</h1>
-                <p>Sekolah/Universitas Login</p>
+                <p>Club Login</p>
             </div>
 
             <div class="login-box">
 
-                <form action="{{ route('sekouniv.login.process') }}" method="POST">
+                <form action="{{ route('club.login.process') }}" method="POST">
                     @csrf
 
                     <!-- EMAIL RESMI CLUB -->
-                    <label for="email_resmi_seko_univ">Email Resmi Club</label>
+                    <label for="email_resmi">Email Resmi Club</label>
                     <div class="input-icon">
                         <img src="{{ asset('images/email-icon.png') }}" class="icon">
-                        <input type="email" id="email_resmi_seko_univ" name="email_resmi_seko_univ" placeholder="email@club.com" required>
+                        <input type="email" id="email_resmi" name="email_resmi" placeholder="email@club.com" required>
                     </div>
 
                     <!-- PASSWORD -->
@@ -274,7 +277,7 @@
 
                 </form>
                 <div class="signup-text">
-                    Belum punya akun? <a href="{{ route('sekouniv_register') }}">Daftar di sini</a>
+                    Belum punya akun? <a href="{{ route('club.register') }}">Daftar di sini</a>
                 </div>
 
             </div>

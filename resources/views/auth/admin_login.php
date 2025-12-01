@@ -1,10 +1,18 @@
 @extends('layouts.layout')
 
-@section('title', 'Club Login - Swim Base')
+@section('title', 'Login - Swim Base')
 
 @section('content')
 
-    <style>
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Swim Base Login</title>
+
+        <style>
             * {
                 box-sizing: border-box;
             }
@@ -234,30 +242,33 @@
                 }
             }
         </style>
+    </head>
 
-    <div class="container">
+    <body>
+
+        <div class="container">
             <div class="welcome-text">
                 <h1>Welcome to Swim Base!</h1>
-                <p>Sekolah/Universitas Login</p>
+                <p>Please log in using the form below</p>
             </div>
 
             <div class="login-box">
 
-                <form action="{{ route('sekouniv.login.process') }}" method="POST">
+                <form action="{{ route('login.process') }}" method="POST">
                     @csrf
 
-                    <!-- EMAIL RESMI CLUB -->
-                    <label for="email_resmi_seko_univ">Email Resmi Club</label>
+                    <!-- ID CLUB -->
+                    <label for="id_admin">id admin</label>
                     <div class="input-icon">
-                        <img src="{{ asset('images/email-icon.png') }}" class="icon">
-                        <input type="email" id="email_resmi_seko_univ" name="email_resmi_seko_univ" placeholder="email@club.com" required>
+                        <img src="{{ asset('images/swimicon.png') }}" class="icon">
+                        <input type="text" id="id_admin" name="id_admin" placeholder="Masukan id admin">
                     </div>
 
                     <!-- PASSWORD -->
                     <label for="password">Password</label>
                     <div class="input-icon">
                         <img src="{{ asset('images/lock-icon.png') }}" class="icon">
-                        <input id="password-field" type="password" name="password" placeholder="password" required>
+                        <input id="password-field" type="password" name="password" placeholder="password">
 
                         <!-- icon mata -->
                         <button type="button" class="eye-btn" onclick="togglePassword()">
@@ -265,18 +276,13 @@
                         </button>
                     </div>
 
+
                     <div class="options">
                         <label><input type="checkbox"> Remember me</label>
                         <a href="#" style="color:#2f98f4;">Forgot Password?</a>
                     </div>
 
                     <button type="submit" class="login-btn">Log in</button>
-
-                </form>
-                <div class="signup-text">
-                    Belum punya akun? <a href="{{ route('sekouniv_register') }}">Daftar di sini</a>
-                </div>
-
             </div>
         </div>
 
@@ -294,5 +300,9 @@
                 }
             }
         </script>
+
+    </body>
+
+    </html>
 
 @endsection

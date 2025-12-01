@@ -98,12 +98,11 @@
     </div>
 
     <ul>
-        <li><a href="/dashboard_user" class="{{ Request::is('/dashboard_user') ? 'active-link' : '' }}">Beranda</a></li>
+        <li><a href="/" class="{{ Request::is('/') ? 'active-link' : '' }}">Beranda</a></li>
         <li><a href="/atlet" class="{{ Request::is('atlet') ? 'active-link' : '' }}">Atlet</a></li>
         <li><a href="/statistik" class="{{ Request::is('statistik') ? 'active-link' : '' }}">Statistik</a></li>
         <li><a href="/galeri" class="{{ Request::is('galeri') ? 'active-link' : '' }}">Galeri</a></li>
         <li><a href="/prestasi" class="{{ Request::is('prestasi') ? 'active-link' : '' }}">Prestasi</a></li>
-        <li><a href="/welcome" class="{{ Request::is('welcome') ? 'active-link' : '' }}">Login</a></li>
     </ul>
 
     <div style="display: flex; align-items:center; gap:10px;">
