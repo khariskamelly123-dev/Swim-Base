@@ -38,6 +38,11 @@ Route::post('/club_logout', [ClubLoginContoller::class, 'club_logout'])->name('c
 
 Route::get('/admin_login', [adminController::class, 'admin'])->name('admin_login');
 
+// login admin
+Route::get('/admin_login', [adminController::class, 'admin'])->name('admin_login');
+
+
+
 // login super admin
 Route::get('/superadmin_login', [superadminController::class, 'superadmin'])->name('superadmin_login');
 
@@ -121,5 +126,9 @@ Route::get('/prestasi', [PrestasiController::class, 'indexprestasi'])->name('pre
 
 //ATLET1
 Route::get('/index', [Atlet1Controller::class, 'atlet1'])->name('atlet.index');
+
+Route::get('/test-sidebar', function () {
+    return view('layouts.sidebar');
+});
 
 
