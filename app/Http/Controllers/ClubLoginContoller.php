@@ -10,12 +10,12 @@ class ClubLoginContoller extends Controller
 {
     public function club()
     {
-        return view('auth.club_login');
+        return view('auth.club.club_login');
     }
 
     public function regis_club()
     {
-        return view('auth.regis_club');
+        return view('auth.club.regis_club');
     }
 
     public function club_register(Request $request)

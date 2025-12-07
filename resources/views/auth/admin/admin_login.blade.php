@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'Register Club - Swim Base')
+@section('title', 'Login - Swim Base')
 
 @section('content')
 
@@ -59,27 +59,8 @@
             border-radius: 16px;
             margin-right: 150px;
             margin-top: 50px;
-            width: 500px;
-            max-height: 85vh;
-            overflow-y: auto;
+            width: 400px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-        }
-
-        .login-box h2 {
-            text-align: center;
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: #fff;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .form-row.full {
-            grid-template-columns: 1fr;
         }
 
         .login-box label {
@@ -121,6 +102,21 @@
             color: #cfcfcf;
         }
 
+        /* OPTIONS */
+        .options {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+
+        .options label {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
         /* LOGIN BUTTON */
         .login-btn {
             width: 100%;
@@ -157,21 +153,22 @@
             opacity: 0.9;
         }
 
-        .signup-text {
-            text-align: center;
+        /* SEPARATOR */
+        .separator {
+            display: flex;
+            align-items: center;
             font-size: 0.9rem;
-            color: #ccc;
-            margin-top: 1rem;
+            color: #bbb;
+            margin-bottom: 1rem;
         }
 
-        .signup-text a {
-            color: #4ea1d3;
-            font-weight: 600;
-            text-decoration: none;
-        }
-
-        .signup-text a:hover {
-            text-decoration: underline;
+        .separator::before,
+        .separator::after {
+            content: "";
+            flex-grow: 1;
+            height: 1px;
+            background: #444;
+            margin: 0 0.75rem;
         }
 
         /* RESPONSIVE */
@@ -198,81 +195,57 @@
     <div class="container">
         <div class="welcome-text">
             <h1>Welcome to Swim Base!</h1>
-            <p>Register your club account</p>
+            <p>Please log in using the form below</p>
         </div>
 
         <div class="login-box">
-            <h2>Register Club</h2>
 
-            <form action="{{ route('club.register.process') }}" method="POST">
+            <form action="{{ route('login.process') }}" method="POST">
                 @csrf
 
-                <!-- NAMA KLUB -->
-                <div class="form-row full">
-                    <div>
-                        <label for="nama_klub">Nama Klub</label>
-                        <div class="input-icon">
-                            <input type="text" id="nama_klub" name="nama_klub" placeholder="Masukkan nama klub" required>
-                        </div>
-                    </div>
+                <!-- nama admin -->
+                <label for="nama_admin">Nama</label>
+                <div class="input-icon">
+                    <img src="{{ asset('images/admin.png') }}" class="icon">
+                    <input type="nama" placeholder="masukkan nama anda">
                 </div>
 
-                <!-- ALAMAT KLUB -->
-                <div class="form-row full">
-                    <div>
-                        <label for="alamat_klub">Alamat Klub</label>
-                        <div class="input-icon">
-                            <input type="text" id="alamat_klub" name="alamat_klub" placeholder="Masukkan alamat klub" required>
-                        </div>
-                    </div>
+                <!-- email -->
+                <label for="email_admin">Email</label>
+                <div class="input-icon">
+                    <img src="{{ asset('images/email-icon.png') }}" class="icon">
+                    <input type="email" placeholder="admin@gmail.com">
                 </div>
 
-                <!-- KONTAK CLUB -->
-                <div class="form-row">
-                    <div>
-                        <label for="kontak_club">Kontak Club</label>
-                        <div class="input-icon">
-                            <input type="tel" id="kontak_club" name="kontak_club" placeholder="Nomor telepon" required>
-                        </div>
-                    </div>
-
-                    <!-- EMAIL RESMI CLUB -->
-                    <div>
-                        <label for="email_resmi">Email Resmi Club</label>
-                        <div class="input-icon">
-                            <input type="email" id="email_resmi" name="email_resmi" placeholder="email@club.com" required>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- PELATIH -->
-                <div class="form-row full">
-                    <div>
-                        <label for="pelatih">Nama Pelatih</label>
-                        <div class="input-icon">
-                            <input type="text" id="pelatih" name="pelatih" placeholder="Masukkan nama pelatih" required>
-                        </div>
-                    </div>
+                <!-- jenis admin -->
+                <label for="jenis_admin">Jenis Admin</label>
+                <div class="input-icon">
+                    <img src="{{ asset('images/star.png') }}" class="icon">
+                    <input type="jenis admin" placeholder="masukkan jenis admin">
                 </div>
 
                 <!-- PASSWORD -->
-                <div class="form-row full">
-                    <div>
-                        <label for="password">Password</label>
-                        <div class="input-icon">
-                            <input id="password-field" type="password" name="password" placeholder="Masukkan password" required>
-                            <button type="button" class="eye-btn" onclick="togglePassword()">
-                                <img id="eye-icon" src="{{ asset('images/eye-icon.png') }}">
-                            </button>
-                        </div>
-                    </div>
+                <label for="password">Password</label>
+                <div class="input-icon">
+                    <img src="{{ asset('images/lock-icon.png') }}" class="icon">
+                    <input id="password-field" type="password" name="password" placeholder="password">
+
+                    <!-- icon mata -->
+                    <button type="button" class="eye-btn" onclick="togglePassword()">
+                        <img id="eye-icon" src="{{ asset('images/eye-icon.png') }}">
+                    </button>
                 </div>
 
-                <button type="submit" class="login-btn">Register</button>
 
+                <div class="options">
+                    <label><input type="checkbox"> Remember me</label>
+                    <a href="#" style="color:#2f98f4;">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="login-btn">Log in</button>
             </form>
             <div class="signup-text">
-                Sudah punya akun? <a href="{{ route('club.login') }}">Login di sini</a>
+                <a href="{{ route('regis_admin') }}">Daftar sebagai Club</a>
             </div>
 
         </div>

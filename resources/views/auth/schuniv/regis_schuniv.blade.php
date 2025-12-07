@@ -58,7 +58,7 @@
             padding: 2rem;
             border-radius: 16px;
             margin-right: 150px;
-            margin-top: 50px;
+            margin-top: 0px;
             width: 500px;
             max-height: 85vh;
             overflow-y: auto;
@@ -198,49 +198,53 @@
     <div class="container">
         <div class="welcome-text">
             <h1>Welcome to Swim Base!</h1>
-            <p>Register your sekolah/universitas account</p>
+            <p>Register your club account</p>
         </div>
 
         <div class="login-box">
-            <h2>Register</h2>
+            <h2>Register Club</h2>
 
-            <form action="{{ route('sekouniv.register.process') }}" method="POST">
+            <form action="{{ route('schuniv.register.process') }}" method="POST">
                 @csrf
 
-                <!-- NAMA KLUB -->
+                <!-- NAMA sekolah -->
                 <div class="form-row full">
                     <div>
-                        <label for="nama_sekolah_universitas">Nama sekolah</label>
+                        <label for="nama_sekolah">Nama sekolah</label>
                         <div class="input-icon">
-                            <input type="text" id="nama_sekolah_universitas" name="nama_sekolah_universitas" placeholder="Masukkan nama sekolah/universitas" required>
+                            <input type="text" id="nama_sekolah" name="nama_sekolah" placeholder="Masukkan nama sekolah"
+                                required>
                         </div>
                     </div>
                 </div>
 
-                <!-- ALAMAT KLUB -->
+                <!-- ALAMAT sekolah -->
                 <div class="form-row full">
                     <div>
-                        <label for="alamat_sekolah_universitas">Alamat sekolah</label>
+                        <label for="alamat_sekolah">Alamat sekolah</label>
                         <div class="input-icon">
-                            <input type="text" id="alamat_sekolah_universitas" name="alamat_sekolah_universitas" placeholder="Masukkan alamat sekolah/universitas" required>
+                            <input type="text" id="alamat_sekolah" name="alamat_sekolah"
+                                placeholder="Masukkan alamat sekolah" required>
                         </div>
                     </div>
                 </div>
 
-                <!-- KONTAK CLUB -->
+                <!-- KONTAK sekolah -->
                 <div class="form-row">
                     <div>
-                        <label for="kontak_seko_univ">Kontak universitas</label>
+                        <label for="kontak_sekolah">Kontak sekolah</label>
                         <div class="input-icon">
-                            <input type="tel" id="kontak_seko_univ" name="kontak_seko_univ" placeholder="Nomor telepon" required>
+                            <input type="tel" id="kontak_sekolah" name="kontak_sekolah" placeholder="Nomor telepon"
+                                required>
                         </div>
                     </div>
 
-                    <!-- EMAIL RESMI CLUB -->
+                    <!-- EMAIL RESMI sekolah -->
                     <div>
-                        <label for="email_resmi_seko_univ">Email Resmi Club</label>
+                        <label for="email_resmi">Email Resmi sekolah</label>
                         <div class="input-icon">
-                            <input type="email" id="email_resmi_seko_univ" name="email_resmi_seko_univ" placeholder="email@sch.id/ac.id" required>
+                            <input type="email" id="email_resmi" name="email_resmi" placeholder="sekolah@gmail.com"
+                                required>
                         </div>
                     </div>
                 </div>
@@ -250,7 +254,8 @@
                     <div>
                         <label for="password">Password</label>
                         <div class="input-icon">
-                            <input id="password-field" type="password" name="password" placeholder="Masukkan password" required>
+                            <input id="password-field" type="password" name="password" placeholder="Masukkan password"
+                                required>
                             <button type="button" class="eye-btn" onclick="togglePassword()">
                                 <img id="eye-icon" src="{{ asset('images/eye-icon.png') }}">
                             </button>
@@ -259,6 +264,11 @@
                 </div>
 
                 <button type="submit" class="login-btn">Register</button>
+
+            </form>
+            <div class="signup-text">
+                Sudah punya akun? <a href="{{ route('schuniv.login') }}">Login di sini</a>
+            </div>
 
         </div>
     </div>

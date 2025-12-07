@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'Login - Swim Base')
+@section('title', 'Club Login - Swim Base')
 
 @section('content')
 
@@ -171,6 +171,49 @@
             margin: 0 0.75rem;
         }
 
+        /* GOOGLE BUTTON */
+        .google-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: none;
+            background-color: white;
+            color: black;
+            font-weight: 600;
+            cursor: pointer;
+            gap: 8px;
+            font-size: 1rem;
+            transition: 0.3s ease;
+        }
+
+        .google-btn:hover {
+            background-color: #eee;
+        }
+
+        .google-logo {
+            width: 20px;
+        }
+
+        .signup-text {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-top: 1rem;
+        }
+
+        .signup-text a {
+            color: #4ea1d3;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .signup-text a:hover {
+            text-decoration: underline;
+        }
+
         /* RESPONSIVE */
         @media (max-width: 900px) {
             .container {
@@ -191,61 +234,76 @@
             }
         }
     </style>
+    </head>
 
-    <div class="container">
-        <div class="welcome-text">
-            <h1>Welcome to Swim Base!</h1>
-            <p>Please log in using the form below</p>
-        </div>
+    <body>
 
-        <div class="login-box">
+        <div class="container">
+            <div class="welcome-text">
+                <h1>Welcome to Swim Base!</h1>
+                <p>Please log in using the form below</p>
+            </div>
 
-            <form action="{{ route('login.process') }}" method="POST">
-                @csrf
+            <div class="login-box">
 
-                <!-- ID ADMIN -->
-                <label for="email">Email</label>
+                <form action="{{ route('club.login.process') }}" method="POST">
+                    @csrf
+
+
+                    <!-- nama CLUB -->
+                    <label for="nama_club">Nama Club</label>
                     <div class="input-icon">
-                        <img src="{{ asset('images/admin.png') }}" class="icon">
-                        <input type="email" placeholder="email@gmail.com">
+                        <img src="{{ asset('images/groub.png') }}" class="icon">
+                        <input type="email" id="email_resmi" name="email_resmi" placeholder="masukkan nama club" required>
                     </div>
 
-                <!-- PASSWORD -->
-                <label for="password">Password</label>
-                <div class="input-icon">
-                    <img src="{{ asset('images/lock-icon.png') }}" class="icon">
-                    <input id="password-field" type="password" name="password" placeholder="password">
+                    <!-- EMAIL RESMI CLUB -->
+                    <label for="email_resmi">Email Resmi Club</label>
+                    <div class="input-icon">
+                        <img src="{{ asset('images/email-icon.png') }}" class="icon">
+                        <input type="email" id="email_resmi" name="email_resmi" placeholder="club@gmail.com" required>
+                    </div>
 
-                    <!-- icon mata -->
-                    <button type="button" class="eye-btn" onclick="togglePassword()">
-                        <img id="eye-icon" src="{{ asset('images/eye-icon.png') }}">
-                    </button>
+                    <!-- PASSWORD -->
+                    <label for="password">Password</label>
+                    <div class="input-icon">
+                        <img src="{{ asset('images/lock-icon.png') }}" class="icon">
+                        <input id="password-field" type="password" name="password" placeholder="password" required>
+
+                        <!-- icon mata -->
+                        <button type="button" class="eye-btn" onclick="togglePassword()">
+                            <img id="eye-icon" src="{{ asset('images/eye-icon.png') }}">
+                        </button>
+                    </div>
+
+                    <div class="options">
+                        <label><input type="checkbox"> Remember me</label>
+                        <a href="#" style="color:#2f98f4;">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="login-btn">Log in</button>
+
+                </form>
+                <div class="signup-text">
+                    Belum punya akun? <a href="{{ route('regis_club') }}">Daftar di sini</a>
                 </div>
 
-
-                <div class="options">
-                    <label><input type="checkbox"> Remember me</label>
-                    <a href="#" style="color:#2f98f4;">Forgot Password?</a>
-                </div>
-
-                <button type="submit" class="login-btn">Log in</button>
-
+            </div>
         </div>
-    </div>
 
-    <script>
-        function togglePassword() {
-            const pass = document.getElementById("password-field");
-            const icon = document.getElementById("eye-icon");
+        <script>
+            function togglePassword() {
+                const pass = document.getElementById("password-field");
+                const icon = document.getElementById("eye-icon");
 
-            if (pass.type === "password") {
-                pass.type = "text";
-                icon.style.opacity = "1";
-            } else {
-                pass.type = "password";
-                icon.style.opacity = "0.8";
+                if (pass.type === "password") {
+                    pass.type = "text";
+                    icon.style.opacity = "1";
+                } else {
+                    pass.type = "password";
+                    icon.style.opacity = "0.8";
+                }
             }
-        }
-    </script>
+        </script>
 
 @endsection

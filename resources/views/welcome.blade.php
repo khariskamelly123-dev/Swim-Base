@@ -158,9 +158,9 @@
 
             <div class="login-box">
                 <h2>LOGIN AS</h2>
-                
+
                 <div class="selection-grid">
-                    <a href='login'class="selection-card">
+                    <a href='login' class="selection-card">
                         <span class="icon">🎓</span>
                         <h3>School / University</h3>
                         <p>Student Account</p>

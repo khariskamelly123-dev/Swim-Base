@@ -203,12 +203,19 @@
             <form action="{{ route('login.process') }}" method="POST">
                 @csrf
 
-                <!-- ID ADMIN -->
+                <!-- nama -->
+                <label for="nama">nama</label>
+                <div class="input-icon">
+                    <img src="{{ asset('images/admin.png') }}" class="icon">
+                    <input type="text" placeholder="masukkan nama">
+                </div>
+
+                <!-- email -->
                 <label for="email">Email</label>
-                    <div class="input-icon">
-                        <img src="{{ asset('images/admin.png') }}" class="icon">
-                        <input type="email" placeholder="email@gmail.com">
-                    </div>
+                <div class="input-icon">
+                    <img src="{{ asset('images/admin.png') }}" class="icon">
+                    <input type="email" placeholder="email@gmail.com">
+                </div>
 
                 <!-- PASSWORD -->
                 <label for="password">Password</label>
