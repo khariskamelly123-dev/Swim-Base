@@ -200,7 +200,7 @@
 
         <div class="login-box">
 
-            <form action="{{ route('login.process') }}" method="POST">
+            <form action="{{ route('superadmin.login.process') }}" method="POST">
                 @csrf
 
                 <!-- nama -->

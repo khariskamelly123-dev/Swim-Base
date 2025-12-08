@@ -200,22 +200,14 @@
 
         <div class="login-box">
 
-            <form action="{{ route('login.process') }}" method="POST">
+            <form action="{{ route('sekouniv.login.process') }}" method="POST">
                 @csrf
 
-
-                <!-- nama sekolah -->
-                <label for="nama_sekolah">Email</label>
-                <div class="input-icon">
-                    <img src="{{ asset('images/school.png') }}" class="icon">
-                    <input type="email" placeholder="masukkan nama sekolah">
-                </div>
-
                 <!-- email -->
-                <label for="email">Email</label>
+                <label for="email_resmi_seko_univ">Email</label>
                 <div class="input-icon">
                     <img src="{{ asset('images/email.png') }}" class="icon">
-                    <input type="email" placeholder="schuniv@gmail.com">
+                    <input type="email" name="email_resmi_seko_univ" placeholder="schuniv@gmail.com">
                 </div>
 
                 <!-- PASSWORD -->
@@ -239,7 +231,7 @@
                 <button type="submit" class="login-btn">Log in</button>
             </form>
             <div class="signup-text">
-                Belum punya akun? <a href="{{ route('regis_schuniv') }}">Daftar di sini</a>
+                Belum punya akun? <a href="{{ route('sekouniv_register') }}">Daftar di sini</a>
             </div>
 
         </div>

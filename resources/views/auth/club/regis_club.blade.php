@@ -274,7 +274,7 @@
 
             </form>
             <div class="signup-text">
-                Sudah punya akun? <a href="{{ route('club_login') }}">Login di sini</a>
+                Sudah punya akun? <a href="{{ route('club.login') }}">Login di sini</a>
             </div>
 
         </div>

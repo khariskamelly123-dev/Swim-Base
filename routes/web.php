@@ -35,16 +35,12 @@ Route::post('/club_logout', [ClubLoginContoller::class, 'club_logout'])->name('c
 
 
 // login admin
-
 Route::get('/admin_login', [adminController::class, 'admin'])->name('admin_login');
-
-// login admin
-Route::get('/admin_login', [adminController::class, 'admin'])->name('admin_login');
-
-
+Route::post('/admin_login_process', [adminController::class, 'admin_login_process'])->name('admin.login.process');
 
 // login super admin
 Route::get('/superadmin_login', [superadminController::class, 'superadmin'])->name('superadmin_login');
+Route::post('/superadmin_login_process', [superadminController::class, 'superadmin_login_process'])->name('superadmin.login.process');
 
 
 // seko_univ

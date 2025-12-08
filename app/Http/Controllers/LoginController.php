@@ -5,17 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\sekouniv;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 
 class LoginController extends Controller
 {
     public function seko_univ()
     {
-        return view('auth.login');
+        return view('auth.schuniv.schuniv_login');
     }
 
     public function regis_seko_univ()
     {
-        return view('auth.schuniv_regis');
+        return view('auth.schuniv.regis_schuniv');
     }
 
     public function sekouniv_register(Request $request)
@@ -24,7 +25,7 @@ class LoginController extends Controller
             'nama_sekolah_universitas' => 'required|string|max:255',
             'alamat_sekolah_universitas' => 'required|string',
             'kontak_seko_univ' => 'required|string|max:20',
-            'email_resmi_seko_univ' => 'required|email|unique:club_data,email_resmi',
+            'email_resmi_seko_univ' => 'required|email|unique:seko_univ_data,email_resmi_seko_univ',
             'password' => 'required|string|min:6',
         ]);
 
@@ -32,7 +33,7 @@ class LoginController extends Controller
 
         sekouniv::create($validated);
 
-        return redirect()->route('login')->with('success', 'Registrasi sekolah berhasil. Silakan login.');
+        return Redirect()->route('login')->with('success', 'Registrasi sekolah berhasil. Silakan login.');
     }
 
     public function sekouniv_login_process(Request $request)

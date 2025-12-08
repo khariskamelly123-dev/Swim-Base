@@ -198,21 +198,21 @@
     <div class="container">
         <div class="welcome-text">
             <h1>Welcome to Swim Base!</h1>
-            <p>Register your club account</p>
+            <p>Register your sekolah/universitas account</p>
         </div>
 
         <div class="login-box">
-            <h2>Register Club</h2>
+            <h2>Register Sekolah</h2>
 
-            <form action="{{ route('schuniv.register.process') }}" method="POST">
+            <form action="{{ route('sekouniv.register.process') }}" method="POST">
                 @csrf
 
                 <!-- NAMA sekolah -->
                 <div class="form-row full">
                     <div>
-                        <label for="nama_sekolah">Nama sekolah</label>
+                        <label for="nama_sekolah_universitas">Nama sekolah</label>
                         <div class="input-icon">
-                            <input type="text" id="nama_sekolah" name="nama_sekolah" placeholder="Masukkan nama sekolah"
+                            <input type="text" id="nama_sekolah_universitas" name="nama_sekolah_universitas" placeholder="Masukkan nama sekolah"
                                 required>
                         </div>
                     </div>
@@ -221,9 +221,9 @@
                 <!-- ALAMAT sekolah -->
                 <div class="form-row full">
                     <div>
-                        <label for="alamat_sekolah">Alamat sekolah</label>
+                        <label for="alamat_sekolah_universitas">Alamat sekolah</label>
                         <div class="input-icon">
-                            <input type="text" id="alamat_sekolah" name="alamat_sekolah"
+                            <input type="text" id="alamat_sekolah_universitas" name="alamat_sekolah_universitas"
                                 placeholder="Masukkan alamat sekolah" required>
                         </div>
                     </div>
@@ -232,18 +232,18 @@
                 <!-- KONTAK sekolah -->
                 <div class="form-row">
                     <div>
-                        <label for="kontak_sekolah">Kontak sekolah</label>
+                        <label for="kontak_seko_univ">Kontak sekolah</label>
                         <div class="input-icon">
-                            <input type="tel" id="kontak_sekolah" name="kontak_sekolah" placeholder="Nomor telepon"
+                            <input type="tel" id="kontak_seko_univ" name="kontak_seko_univ" placeholder="Nomor telepon"
                                 required>
                         </div>
                     </div>
 
                     <!-- EMAIL RESMI sekolah -->
                     <div>
-                        <label for="email_resmi">Email Resmi sekolah</label>
+                        <label for="email_resmi_seko_univ">Email Resmi sekolah</label>
                         <div class="input-icon">
-                            <input type="email" id="email_resmi" name="email_resmi" placeholder="sekolah@gmail.com"
+                            <input type="email" id="email_resmi_seko_univ" name="email_resmi_seko_univ" placeholder="sekolah@sch.id"
                                 required>
                         </div>
                     </div>
@@ -267,7 +267,7 @@
 
             </form>
             <div class="signup-text">
-                Sudah punya akun? <a href="{{ route('schuniv.login') }}">Login di sini</a>
+                Sudah punya akun? <a href="{{ route('login') }}">Login di sini</a>
             </div>
 
         </div>
