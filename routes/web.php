@@ -123,8 +123,16 @@ Route::get('/prestasi', [PrestasiController::class, 'indexprestasi'])->name('pre
 //ATLET1
 Route::get('/index', [Atlet1Controller::class, 'atlet1'])->name('atlet.index');
 
-Route::get('/test-sidebar', function () {
-    return view('layouts.sidebar');
-});
+//DASHBOARD SUPERADMIN
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware('auth')
+    ->name('dashboard');
+
+//DASHBOARD ADMIN
+Route::get('/dashboard_admin', [DashboardController::class, 'admin'])
+    ->middleware('auth')
+    ->name('dashboard_admin');
+
+
 
 
