@@ -12,10 +12,12 @@
     <div>
       <a class="btn btn-outline-primary btn-sm" href="{{ route('atlet.index') }}">Data Atlet</a>
       <a class="btn btn-outline-secondary btn-sm" href="{{ route('pengajuan.index') }}">Pengajuan</a>
-      <form method="POST" action="{{ route('user.logout') }}" class="d-inline">
-        @csrf
-        <button class="btn btn-outline-danger btn-sm">Logout</button>
-      </form>
+      <form action="{{ route('logout') }}" method="POST" class="d-inline">
+    @csrf
+    <button type="submit" class="dropdown-item">
+        Logout
+    </button>
+    </form>
     </div>
   </div>
 </nav>

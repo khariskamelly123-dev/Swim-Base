@@ -4,14 +4,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PengajuanController;
 use App\Http\Controllers\AtletController;
 use App\Http\Controllers;
-use App\Http\Controllers\Atlet1Controller;
 use App\Http\Controllers\ClubLoginContoller;
 use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\superadminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
-
+use Illuminate\Support\Facades\Auth;
 //langsung route redirect saat pertama kali buka web
 Route::get('/', function () {
     return redirect('/welcome'); // ganti ke '/...' kalau ingin ke halaman lain
@@ -120,11 +119,18 @@ Route::post(
 //PRESTASI
 Route::get('/prestasi', [PrestasiController::class, 'indexprestasi'])->name('prestasi');
 
-//ATLET1
-Route::get('/index', [Atlet1Controller::class, 'atlet1'])->name('atlet.index');
+//ATLET
+Route::get('/atlet', [AtletController::class, 'index'])->name('atlet.index');
+Route::post('/logout', [LoginController::class, 'logout'])->name('user.logout');
 
 Route::get('/test-sidebar', function () {
     return view('layouts.sidebar');
 });
 
+Route::post('/logout', function () {
+    Auth::logout(); // Proses logout
+    request()->session()->invalidate(); // Hapus sesi
+    request()->session()->regenerateToken(); // Regenerasi token keamanan
+    return redirect('/'); // Kembali ke halaman awal/login
+})->name('logout');
 
