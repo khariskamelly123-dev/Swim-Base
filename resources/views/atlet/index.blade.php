@@ -1,62 +1,93 @@
 @extends('layouts.layout')
 
 @section('content')
-<h3 class="mb-4">Data Atlet</h3>
 
-<a href="{{ route('atlet.create') }}" class="btn btn-primary mb-3">
-    + Tambah Atlet
-</a>
+    <style>
+        body {
+            background: #e9ebf2;
+            font-family: Arial, sans-serif;
+        }
 
-<table class="table table-bordered table-striped">
-    <thead class="table-light">
-        <tr>
-            <th>No</th>
-            <th>Nama</th>
-            <th>Umur</th>
-            <th>Kelamin</th>
-            <th>Keterangan</th>
-            <th>Aksi</th>
-        </tr>
-    </thead>
+        /* HEADER IMAGE */
+        .header-image {
+            width: 100%;
+            height: 280px;
+            border-radius: 0;
+            overflow: hidden;
+        }
 
-    <tbody>
-        @forelse($atlet as $a)
-        <tr>
-            <td>{{ $loop->iteration }}</td>
-            <td>{{ $a->nama }}</td>
-            <td>{{ $a->umur }}</td>
-            <td>{{ $a->kelamin }}</td>
-            <td>{{ $a->keterangan }}</td>
+        .header-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-            <td>
-                {{-- Untuk Klub: Hanya Ajukan Edit/Hapus --}}
-                @if(auth()->user()->role == 'klub')
-                    <a href="{{ route('pengajuan.formEdit', $a->id) }}"
-                       class="btn btn-warning btn-sm">Ajukan Edit</a>
+        /* CARD GRID */
+        .atlet-container {
+            width: 80%;
+            margin: 30px auto 80px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
 
-                    <a href="{{ route('pengajuan.formHapus', $a->id) }}"
-                       class="btn btn-danger btn-sm">Ajukan Hapus</a>
-                @endif
+        .atlet-card {
+            background: #fff;
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
+        }
 
-                {{-- Untuk Super Admin: CRUD langsung --}}
-                @if(auth()->user()->role == 'superadmin')
-                    <a href="{{ route('atlet.edit', $a->id) }}"
-                       class="btn btn-info btn-sm">Edit</a>
+        .atlet-card h4 {
+            margin: 0;
+            font-size: 16px;
+            color: #000;
+            font-weight: bold;
+            position: relative;
+            padding-bottom: 5px;
+        }
 
-                    <form action="{{ route('atlet.destroy', $a->id) }}" 
-                          method="POST" class="d-inline">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-danger btn-sm">Hapus</button>
-                    </form>
-                @endif
-            </td>
-        </tr>
-        @empty
-        <tr>
-            <td colspan="6" class="text-center">Belum ada data atlet</td>
-        </tr>
-        @endforelse
-    </tbody>
-</table>
+        .atlet-card h4::after {
+            content: "";
+            width: 40px;
+            height: 3px;
+            background: #d40000;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .atlet-card p {
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 20px;
+            color: #111;
+        }
+    </style>
+
+    {{-- HEADER IMAGE --}}
+    <div class="header-image">
+        <img src="{{ asset('images/swim.png') }}" alt="Swim Header">
+    </div>
+
+    {{-- CARD CONTENT --}}
+    <div class="atlet-container">
+
+        <div class="atlet-card">
+            <h4>ATLET</h4>
+            <p>Menampilkan total atlet</p>
+        </div>
+
+        <div class="atlet-card">
+            <h4>CLUB</h4>
+            <p>Menampilkan total klub</p>
+        </div>
+
+        <div class="atlet-card" style="grid-column: span 2;">
+            <h4>ATLET</h4>
+            <p>Menampilkan best time & persentase FP</p>
+        </div>
+
+    </div>
+
 @endsection

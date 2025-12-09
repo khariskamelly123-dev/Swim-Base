@@ -8,7 +8,7 @@ class adminController extends Controller
 {
     public function admin()
     {
-        return view('auth.admin_login');
+        return view('auth.admin.admin_login');
     }
 
     public function admin_login_process(Request $request)

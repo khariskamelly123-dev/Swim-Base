@@ -8,7 +8,7 @@ class superadminController extends Controller
 {
     public function superadmin()
     {
-        return view('auth.superadmin_login');
+        return view('auth.superadmin.superadmin_login');
     }
 
     public function superadmin_login_process(Request $request)

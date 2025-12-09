@@ -10,10 +10,13 @@ use Illuminate\Support\Facades\Auth;
 class AtletController extends Controller
 {
     public function index()
-    {
-        $atlet = Atlet::orderBy('nama')->get();
-        return view('atlet.index', compact('atlet'));
-    }
+{
+    $total_atlet = Atlet::count();
+    $total_club = 0;
+    $atlet = Atlet::orderBy('nama')->get(); 
+
+    return view('atlet.index', compact('total_atlet', 'total_club', 'atlet'));
+}
 
     public function create()
     {
