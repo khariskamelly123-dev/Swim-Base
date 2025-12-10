@@ -207,7 +207,7 @@
                 <!-- email -->
                 <label for="email">Email</label>
                 <div class="input-icon">
-                    <img src="{{ asset('images/admin.png') }}" class="icon">
+                    <img src="{{ asset('images/email-icon.png') }}" class="icon">
                     <input id="email" name="email" type="email" placeholder="email@gmail.com" required>
                 </div>
 

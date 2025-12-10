@@ -11,7 +11,7 @@
         /* HEADER IMAGE */
         .header-image {
             width: 100%;
-            height: 280px;
+            height: 350px;
             border-radius: 0;
             overflow: hidden;
         }
@@ -20,6 +20,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: center;
         }
 
         /* CARD GRID */
@@ -67,7 +68,7 @@
 
     {{-- HEADER IMAGE --}}
     <div class="header-image">
-        <img src="{{ asset('images/swim.png') }}" alt="Swim Header">
+        <img src="{{ asset('images/swim-atlet.png') }}" alt="Swim Header">
     </div>
 
     {{-- CARD CONTENT --}}

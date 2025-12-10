@@ -162,6 +162,23 @@
             margin-bottom: 1rem;
         }
 
+        .signup-text {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-top: 1rem;
+        }
+
+        .signup-text a {
+            color: #4ea1d3;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .signup-text a:hover {
+            text-decoration: underline;
+        }
+
         .separator::before,
         .separator::after {
             content: "";
@@ -208,7 +225,7 @@
                 <!-- email -->
                 <label for="email_resmi_seko_univ">Email</label>
                 <div class="input-icon">
-                    <img src="{{ asset('images/email.png') }}" class="icon">
+                    <img src="{{ asset('images/email-icon.png') }}" class="icon">
                     <input type="email" name="email_resmi_seko_univ" placeholder="schuniv@gmail.com">
                 </div>
 
