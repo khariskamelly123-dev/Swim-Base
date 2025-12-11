@@ -12,10 +12,8 @@ class CreateAtletsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('klub_id')->nullable();
             $table->string('nama');
-            $table->string('nisn')->nullable();
             $table->date('tanggal_lahir')->nullable();
-            $table->enum('gender', ['L','P'])->nullable();
-            $table->string('cabang_olahraga')->nullable();
+            $table->string('kategori_renang')->nullable();
             $table->timestamps();
         });
     }
