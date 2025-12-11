@@ -27,7 +27,6 @@ class AtletController extends Controller
     {
         $request->validate([
             'nama' => 'required|string',
-            'nisn' => 'nullable|string',
             'tanggal_lahir' => 'nullable|date',
             'gender' => 'nullable|in:L,P',
             'cabang_olahraga' => 'nullable|string'
@@ -36,7 +35,6 @@ class AtletController extends Controller
         Atlet::create([
             'klub_id' => Auth::user()->id ?? null, // asumsi user mewakili klub
             'nama' => $request->nama,
-            'nisn' => $request->nisn,
             'tanggal_lahir' => $request->tanggal_lahir,
             'gender' => $request->gender,
             'cabang_olahraga' => $request->cabang_olahraga
@@ -58,13 +56,12 @@ class AtletController extends Controller
 
         $request->validate([
             'nama' => 'required|string',
-            'nisn' => 'nullable|string',
             'tanggal_lahir' => 'nullable|date',
             'gender' => 'nullable|in:L,P',
             'cabang_olahraga' => 'nullable|string'
         ]);
 
-        $atlet->update($request->only(['nama','nisn','tanggal_lahir','gender','cabang_olahraga']));
+        $atlet->update($request->only(['nama','tanggal_lahir','gender','cabang_olahraga']));
 
         return redirect()->route('atlet.index')->with('success', 'Atlet diperbarui');
     }
