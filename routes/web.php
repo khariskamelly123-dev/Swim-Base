@@ -14,6 +14,7 @@ use App\Http\Controllers\superadminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Auth;
+
 // middleware alias 'role' is registered in Kernel
 //langsung route redirect saat pertama kali buka web
 Route::get('/', function () {
@@ -21,10 +22,8 @@ Route::get('/', function () {
 });
 
 // DASHBOARD
-Route::get('/dashboard_user', [DashboardController::class, 'dashboard'])->name('dashboard_user');
 Route::get('/dashboard_afterlogin', [DashboardController::class, 'dashboard_afterlogin'])
-    ->middleware('role')
-    ->defaults('roles', 'klub,sekolah,admin,superadmin')
+    ->middleware('role:klub,sekolah,admin,superadmin') // <--- GABUNG DI SINI
     ->name('dashboard_afterlogin');
 
 
@@ -130,17 +129,15 @@ Route::post(
 //PRESTASI
 Route::get('/prestasi', [PrestasiController::class, 'indexprestasi'])->name('prestasi');
 
-// API: Prestasi resource (create/read/update/delete) - allow klub/sekolah/admin
-Route::group(['prefix' => 'api', 'middleware' => 'role', 'defaults' => ['roles' => 'klub,sekolah,admin,superadmin']], function () {
+// Contoh untuk API (yang lama pakai defaults, sekarang hapus defaults-nya):
+Route::group(['prefix' => 'api', 'middleware' => 'role:klub,sekolah,admin,superadmin'], function () {
     Route::resource('prestasis', PrestasiApiController::class)->only(['index','store','show','update','destroy']);
 });
 
-// Kategori & Event resource routes (admin)
-Route::group(['middleware' => ['auth','role'], 'defaults' => ['roles' => 'admin,superadmin']], function () {
+// Contoh untuk Kategori & Event:
+Route::group(['middleware' => ['auth', 'role:admin,superadmin']], function () {
     Route::resource('kategoris', KategoriController::class)->except(['create','edit']);
-    Route::resource('events', EventController::class)->except(['create','edit']);
-    // Activity logs (admin)
-    Route::get('activity-logs', [ActivityLogController::class,'index'])->name('activity.logs');
+    // ...
 });
 
 //ATLET
