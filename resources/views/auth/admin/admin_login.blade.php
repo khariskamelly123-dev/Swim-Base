@@ -231,9 +231,6 @@
 
                 <button type="submit" class="login-btn">Log in</button>
             </form>
-            <div class="signup-text">
-                <a href="{{ route('regis_admin') }}">Daftar sebagai Admin</a>
-            </div>
 
         </div>
     </div>

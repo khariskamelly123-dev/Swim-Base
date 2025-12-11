@@ -58,7 +58,11 @@ class AtletController extends Controller
             'kategori_renang' => 'nullable|string'
         ]);
 
+<<<<<<< HEAD
         $atlet->update($request->only(['nama','tanggal_lahir','kategori_renang']));
+=======
+        $atlet->update($request->only(['nama','tanggal_lahir','gender','cabang_olahraga']));
+>>>>>>> 4c06392d8550e5a8fe3b37f3b03067f28e357a6b
 
         return redirect()->route('atlet.index')->with('success', 'Atlet diperbarui');
     }

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<h3>Tambah Atlet</h3>
+    <h3>Tambah Atlet</h3>
 
 <form action="{{ route('atlet.store') }}" method="POST">
     @csrf
@@ -11,15 +11,29 @@
     </div>
 
     <div class="mb-3">
+        <label>NISN</label>
+        <input type="text" name="nisn" class="form-control">
+    </div>
+
+    <div class="mb-3">
         <label>Tanggal Lahir</label>
         <input type="date" name="tanggal_lahir" class="form-control">
     </div>
 
     <div class="mb-3">
-        <label>Cabang Olahraga</label>
-        <input type="text" name="kategori_renang" class="form-control">
+        <label>Gender</label>
+        <select name="gender" class="form-control">
+            <option value="">-</option>
+            <option value="L">L</option>
+            <option value="P">P</option>
+        </select>
     </div>
 
-    <button class="btn btn-primary">Simpan</button>
-</form>
+    <div class="mb-3">
+        <label>Cabang Olahraga</label>
+        <input type="text" name="cabang_olahraga" class="form-control">
+    </div>
+
+        <button class="btn btn-primary">Simpan</button>
+    </form>
 @endsection
