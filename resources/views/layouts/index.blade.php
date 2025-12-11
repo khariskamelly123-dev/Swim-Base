@@ -15,7 +15,6 @@
         <tr>
             <th>No</th>
             <th>Nama</th>
-            <th>NISN</th>
             <th>Tanggal Lahir</th>
             <th>Cabang</th>
             <th>Aksi</th>
@@ -26,9 +25,8 @@
         <tr>
             <td>{{ $i+1 }}</td>
             <td>{{ $a->nama }}</td>
-            <td>{{ $a->nisn }}</td>
             <td>{{ $a->tanggal_lahir }}</td>
-            <td>{{ $a->cabang_olahraga }}</td>
+            <td>{{ $a->kategori_renang }}</td>
             <td>
                 @if($role == 'klub')
                     <a href="{{ route('pengajuan.formEdit', $a->id) }}" class="btn btn-sm btn-info">Ajukan Edit</a>

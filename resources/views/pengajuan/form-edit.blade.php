@@ -12,11 +12,6 @@
     </div>
 
     <div class="mb-3">
-        <label>NISN (baru)</label>
-        <input type="text" name="perubahan[nisn]" class="form-control" value="{{ $atlet->nisn }}">
-    </div>
-
-    <div class="mb-3">
         <label>Tanggal Lahir (baru)</label>
         <input type="date" name="perubahan[tanggal_lahir]" class="form-control" value="{{ $atlet->tanggal_lahir }}">
     </div>
