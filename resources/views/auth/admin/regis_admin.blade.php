@@ -207,23 +207,23 @@
             <form action="{{ route('admin.register.process') }}" method="POST">
                 @csrf
 
+                @if($errors->any())
+                    <div style="background:#2b2b2b;padding:10px;border-radius:8px;margin-bottom:12px;color:#ffb4b4;">
+                        <strong>Terjadi kesalahan:</strong>
+                        <ul style="margin:8px 0 0 18px;">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <!-- NAMA -->
                 <div class="form-row full">
                     <div>
                         <label for="nama_admin">Nama</label>
                         <div class="input-icon">
-                            <input type="text" id="nama_admin" name="nama_admin" placeholder="Masukkan nama anda" required>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- alamat -->
-                <div class="form-row full">
-                    <div>
-                        <label for="alamat_admin">Alamat</label>
-                        <div class="input-icon">
-                            <input type="text" id="alamat_admin" name="alamat_admin" placeholder="Masukkan alamat anda"
-                                required>
+                            <input type="text" id="nama_admin" name="nama_admin" value="{{ old('nama_admin') }}" placeholder="Masukkan nama anda" required>
                         </div>
                     </div>
                 </div>
@@ -231,29 +231,19 @@
                 <!-- jenis admin -->
                 <div class="form-row full">
                     <div>
-                        <label for="jenis_admin">jenis admin</label>
+                        <label for="jenis_admin">Jenis Admin</label>
                         <div class="input-icon">
-                            <input type="text" id="jenis_admin" name="jenis_admin" placeholder="Masukkan jenis admin anda"
-                                required>
+                            <input type="text" id="jenis_admin" name="jenis_admin" value="{{ old('jenis_admin') }}" placeholder="Masukkan jenis admin" required>
                         </div>
                     </div>
                 </div>
 
-                <!-- KONTAK -->
-                <div class="form-row">
-                    <div>
-                        <label for="kontak_admin">Kontak</label>
-                        <div class="input-icon">
-                            <input type="tel" id="kontak_admin" name="kontak_admin" placeholder="Masukkan Nomor telepon"
-                                required>
-                        </div>
-                    </div>
-
-                    <!-- EMAIL -->
+                <!-- EMAIL -->
+                <div class="form-row full">
                     <div>
                         <label for="email_admin">Email</label>
                         <div class="input-icon">
-                            <input type="email" id="email_resmi" name="email_resmi" placeholder="admin@gmail.com" required>
+                            <input type="email" id="email_resmi" name="email_resmi" value="{{ old('email_resmi') }}" placeholder="admin@gmail.com" required>
                         </div>
                     </div>
                 </div>

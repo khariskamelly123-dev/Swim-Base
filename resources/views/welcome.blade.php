@@ -187,9 +187,6 @@
             </div>
         </div>
 
-        <script>
-            // Selection cards already styled with hover effects
-        </script>
 
     </body>
 

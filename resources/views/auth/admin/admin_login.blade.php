@@ -202,26 +202,13 @@
 
             <form action="{{ route('admin.login.process') }}" method="POST">
                 @csrf
-
-                <!-- nama admin -->
-                <label for="nama_admin">Nama</label>
-                <div class="input-icon">
-                    <img src="{{ asset('images/admin.png') }}" class="icon">
-                    <input type="nama" placeholder="masukkan nama anda">
-                </div>
+                @include('partials.flash_messages')
 
                 <!-- email -->
                 <label for="email_admin">Email</label>
                 <div class="input-icon">
                     <img src="{{ asset('images/email-icon.png') }}" class="icon">
-                    <input type="email" placeholder="admin@gmail.com">
-                </div>
-
-                <!-- jenis admin -->
-                <label for="jenis_admin">Jenis Admin</label>
-                <div class="input-icon">
-                    <img src="{{ asset('images/star.png') }}" class="icon">
-                    <input type="jenis admin" placeholder="masukkan jenis admin">
+                    <input type="email" name="email" placeholder="admin@gmail.com" required>
                 </div>
 
                 <!-- PASSWORD -->
@@ -245,7 +232,7 @@
                 <button type="submit" class="login-btn">Log in</button>
             </form>
             <div class="signup-text">
-                <a href="{{ route('regis_admin') }}">Daftar sebagai Club</a>
+                <a href="{{ route('regis_admin') }}">Daftar sebagai Admin</a>
             </div>
 
         </div>

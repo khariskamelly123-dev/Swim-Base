@@ -246,6 +246,8 @@
 
             <div class="login-box">
 
+                @include('partials.flash_messages')
+
                 <form action="{{ route('club.login.process') }}" method="POST">
                     @csrf
 
@@ -254,7 +256,7 @@
                     <label for="nama_club">Nama Club</label>
                     <div class="input-icon">
                         <img src="{{ asset('images/groub.png') }}" class="icon">
-                        <input type="nama_klub" id="nama_klub" name="nama_klub" placeholder="masukkan nama club" required>
+                        <input type="text" id="nama_klub" name="nama_klub" placeholder="masukkan nama club" required>
                     </div>
 
                     <!-- EMAIL RESMI CLUB -->

@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class sekouniv extends Model
+class sekouniv extends Authenticatable
 {
     protected $table = 'seko_univ_data';
 

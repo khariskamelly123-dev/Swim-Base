@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class prestasiController extends Controller
+class PrestasiController extends Controller
 {
     public function indexprestasi()
     {

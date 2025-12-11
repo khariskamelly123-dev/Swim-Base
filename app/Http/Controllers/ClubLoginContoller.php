@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\club;
+use App\Models\Club;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class ClubLoginContoller extends Controller
 {
@@ -31,7 +32,7 @@ class ClubLoginContoller extends Controller
 
         $validated['password'] = Hash::make($validated['password']);
 
-        club::create($validated);
+        Club::create($validated);
 
         return redirect()->route('club.login')->with('success', 'Registrasi klub berhasil. Silakan login.');
     }
@@ -43,14 +44,20 @@ class ClubLoginContoller extends Controller
             'password' => 'required|string',
         ]);
 
-        $club = club::where('email_resmi', $validated['email_resmi'])->first();
+        // Attempt to authenticate using the 'club' guard
+        $credentials = [
+            'email_resmi' => $validated['email_resmi'],
+            'password' => $validated['password'],
+        ];
 
-        if (!$club || !Hash::check($validated['password'], $club->password)) {
+        if (!Auth::guard('club')->attempt($credentials)) {
             return back()->withErrors([
                 'email_resmi' => 'Email atau password salah.',
             ])->onlyInput('email_resmi');
         }
 
+        // Authentication successful, optionally store friendly name in session
+        $club = Auth::guard('club')->user();
         session(['club_id' => $club->id, 'club_name' => $club->nama_klub]);
 
         return redirect()->route('dashboard_afterlogin')->with('success', 'Login berhasil');
@@ -58,7 +65,12 @@ class ClubLoginContoller extends Controller
 
     public function club_logout()
     {
+        // Logout from club guard and clear session
+        Auth::guard('club')->logout();
         session()->forget(['club_id', 'club_name']);
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+
         return redirect()->route('club.login')->with('success', 'Logout berhasil');
     }
 }

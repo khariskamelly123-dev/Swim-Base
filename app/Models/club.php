@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class club extends Model
+class Club extends Authenticatable
 {
+    use Notifiable;
+
     protected $table = 'club_data';
 
     protected $fillable = [
@@ -14,10 +17,11 @@ class club extends Model
         'kontak_club',
         'email_resmi',
         'pelatih',
-        'password'
+        'password',
     ];
 
     protected $hidden = [
-        'password'
+        'password',
+        'remember_token',
     ];
 }

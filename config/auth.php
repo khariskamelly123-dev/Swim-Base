@@ -40,6 +40,14 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'club' => [
+            'driver' => 'session',
+            'provider' => 'clubs',
+        ],
+        'sekouniv' => [
+            'driver' => 'session',
+            'provider' => 'sekouniv',
+        ],
     ],
 
     /*
@@ -63,6 +71,16 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
+        ],
+
+        'clubs' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Club::class,
+        ],
+
+        'sekouniv' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\sekouniv::class,
         ],
 
         // 'users' => [

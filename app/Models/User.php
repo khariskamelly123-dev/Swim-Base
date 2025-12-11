@@ -21,7 +21,16 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
+
+    /**
+     * Check if user has given role.
+     */
+    public function hasRole(string $role): bool
+    {
+        return isset($this->role) && $this->role === $role;
+    }
 
     /**
      * The attributes that should be hidden for serialization.

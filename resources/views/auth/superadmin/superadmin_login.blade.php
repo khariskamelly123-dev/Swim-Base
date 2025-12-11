@@ -202,19 +202,13 @@
 
             <form action="{{ route('superadmin.login.process') }}" method="POST">
                 @csrf
-
-                <!-- nama -->
-                <label for="nama">nama</label>
-                <div class="input-icon">
-                    <img src="{{ asset('images/admin.png') }}" class="icon">
-                    <input type="text" placeholder="masukkan nama">
-                </div>
+                @include('partials.flash_messages')
 
                 <!-- email -->
                 <label for="email">Email</label>
                 <div class="input-icon">
-                    <img src="{{ asset('images/admin.png') }}" class="icon">
-                    <input type="email" placeholder="email@gmail.com">
+                    <img src="{{ asset('images/email-icon.png') }}" class="icon">
+                    <input id="email" name="email" type="email" placeholder="email@gmail.com" required>
                 </div>
 
                 <!-- PASSWORD -->
@@ -235,7 +229,9 @@
                     <a href="#" style="color:#2f98f4;">Forgot Password?</a>
                 </div>
 
+
                 <button type="submit" class="login-btn">Log in</button>
+            </form>
 
         </div>
     </div>
