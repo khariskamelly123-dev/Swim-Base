@@ -52,17 +52,14 @@ class adminController extends Controller
 
         DB::beginTransaction();
         try {
+            // Create only the admin user. Do not create a Club record here because
+            // the `club_data` table has a different schema and creating a record
+            // with `user_id/name/jenis_admin` will cause SQL errors.
             $user = User::create([
                 'name' => $validated['nama_admin'],
                 'email' => $validated['email_resmi'],
                 'password' => Hash::make($validated['password']),
                 'role' => 'admin',
-            ]);
-
-            Club::create([
-                'user_id' => $user->id,
-                'name' => $validated['nama_admin'],
-                'jenis_admin' => $validated['jenis_admin'],
             ]);
 
             DB::commit();

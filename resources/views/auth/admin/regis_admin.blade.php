@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'Register Club - Swim Base')
+@section('title', 'Register Admin - Swim Base')
 
 @section('content')
 
@@ -198,11 +198,11 @@
     <div class="container">
         <div class="welcome-text">
             <h1>Welcome to Swim Base!</h1>
-            <p>Register your club account</p>
+            <p>Register your admin account</p>
         </div>
 
         <div class="login-box">
-            <h2>Register Club</h2>
+            <h2>Register Admin</h2>
 
             <form action="{{ route('admin.register.process') }}" method="POST">
                 @csrf
