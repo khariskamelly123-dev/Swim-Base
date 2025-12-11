@@ -11,7 +11,12 @@
             <input type="text" name="perubahan[nama]" class="form-control" value="{{ $atlet->nama }}">
         </div>
 
-<<<<<<< HEAD
+<<<<<<<<< Temporary merge branch 1
+    <div class="mb-3">
+        <label>Tanggal Lahir (baru)</label>
+        <input type="date" name="perubahan[tanggal_lahir]" class="form-control" value="{{ $atlet->tanggal_lahir }}">
+    </div>
+=========
         <div class="mb-3">
             <label>Tanggal Lahir (baru)</label>
             <input type="date" name="perubahan[tanggal_lahir]" class="form-control" value="{{ $atlet->tanggal_lahir }}">
@@ -21,12 +26,7 @@
             <label>Alasan (opsional)</label>
             <textarea name="alasan" class="form-control"></textarea>
         </div>
-=======
-    <div class="mb-3">
-        <label>Tanggal Lahir (baru)</label>
-        <input type="date" name="perubahan[tanggal_lahir]" class="form-control" value="{{ $atlet->tanggal_lahir }}">
-    </div>
->>>>>>> 26333f47378d864bfee574953ec54e984367006c
+>>>>>>>>> Temporary merge branch 2
 
         <button class="btn btn-primary">Kirim Pengajuan</button>
     </form>

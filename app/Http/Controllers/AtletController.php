@@ -58,11 +58,11 @@ class AtletController extends Controller
             'kategori_renang' => 'nullable|string'
         ]);
 
-<<<<<<< HEAD
-        $atlet->update($request->only(['nama','tanggal_lahir','gender','cabang_olahraga']));
-=======
+<<<<<<<<< Temporary merge branch 1
         $atlet->update($request->only(['nama','tanggal_lahir','kategori_renang']));
->>>>>>> 26333f47378d864bfee574953ec54e984367006c
+=========
+        $atlet->update($request->only(['nama','tanggal_lahir','gender','cabang_olahraga']));
+>>>>>>>>> Temporary merge branch 2
 
         return redirect()->route('atlet.index')->with('success', 'Atlet diperbarui');
     }

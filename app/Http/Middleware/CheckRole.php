@@ -10,24 +10,21 @@ class CheckRole
 {
     /**
      * Handle an incoming request.
-     * Expects route action 'roles' to contain comma-separated allowed roles.
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, ...$roles) // <--- Tambahkan ...$roles di sini
     {
-        // Get allowed roles from route action 'roles'
-        $rolesValue = $request->route() ? $request->route()->getAction('roles') : null;
+        // 1. $roles otomatis berisi array dari web.php
+        // Contoh: ['klub', 'sekolah', 'admin']
+        $allowed = $roles; 
 
-        if (!$rolesValue) {
-            // If no roles defined, deny by default
-            return abort(403, 'Access denied (no role specified)');
+        if (empty($allowed)) {
+            return abort(403, 'Access denied (no role specified in route)');
         }
 
-        $allowed = array_map('trim', explode(',', (string) $rolesValue));
-
-        // Determine current role(s) by checking available guards
+        // --- Logika Cek User (Sama seperti sebelumnya) ---
         $currentRoles = [];
 
-        // web guard (users table)
+        // Cek Web Guard
         if (Auth::guard('web')->check()) {
             $user = Auth::guard('web')->user();
             if (isset($user->role)) {
@@ -35,33 +32,28 @@ class CheckRole
             }
         }
 
-        // club guard
+        // Cek Club Guard
         if (method_exists(Auth::class, 'guard') && Auth::guard('club')->check()) {
             $currentRoles[] = 'klub';
         }
 
-        // sekouniv guard
+        // Cek Sekolah Guard
         if (method_exists(Auth::class, 'guard') && Auth::guard('sekouniv')->check()) {
             $currentRoles[] = 'sekolah';
         }
 
-        // Fallback: session-based keys (backwards compatibility)
-        if (session()->has('club_id')) {
-            $currentRoles[] = 'klub';
-        }
+        // Fallback Session
+        if (session()->has('club_id')) $currentRoles[] = 'klub';
+        if (session()->has('sekouniv_id')) $currentRoles[] = 'sekolah';
 
-        if (session()->has('sekouniv_id')) {
-            $currentRoles[] = 'sekolah';
-        }
-
-        // If no detected role, deny
+        // Jika user belum login / tidak ada role terdeteksi
         if (empty($currentRoles)) {
             return redirect('/')->withErrors(['auth' => 'Anda harus login untuk mengakses halaman ini.']);
         }
 
-        // Check intersection
+        // Cek apakah salah satu role user ada di daftar allowed
         foreach ($currentRoles as $r) {
-            if (in_array($r, $allowed, true)) {
+            if (in_array($r, $allowed)) {
                 return $next($request);
             }
         }

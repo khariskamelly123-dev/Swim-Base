@@ -3,14 +3,7 @@
 @section('content')
     <h3>Edit Atlet</h3>
 
-<<<<<<< HEAD
-    <form action="{{ route('atlet.update', $atlet->id) }}" method="POST">
-        @csrf @method('PUT')
-        <div class="mb-3">
-            <label>Nama</label>
-            <input type="text" name="nama" value="{{ $atlet->nama }}" class="form-control" required>
-        </div>
-=======
+<<<<<<<<< Temporary merge branch 1
 <form action="{{ route('atlet.update', $atlet->id) }}" method="POST">
     @csrf @method('PUT')
     <div class="mb-3">
@@ -25,7 +18,14 @@
         <label>Cabang Olahraga</label>
         <input type="text" name="kategori_renang" value="{{ $atlet->kategori_renang }}" class="form-control">
     </div>
->>>>>>> 26333f47378d864bfee574953ec54e984367006c
+=========
+    <form action="{{ route('atlet.update', $atlet->id) }}" method="POST">
+        @csrf @method('PUT')
+        <div class="mb-3">
+            <label>Nama</label>
+            <input type="text" name="nama" value="{{ $atlet->nama }}" class="form-control" required>
+        </div>
+>>>>>>>>> Temporary merge branch 2
 
         <div class="mb-3">
             <label>Tanggal Lahir</label>
