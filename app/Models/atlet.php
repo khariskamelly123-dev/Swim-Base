@@ -15,8 +15,7 @@ class Atlet extends Model
         'klub_id',
         'nama',
         'tanggal_lahir',
-        'gender',
-        'cabang_olahraga'
+        'kategori_renang'
     ];
 
     public function pengajuans()

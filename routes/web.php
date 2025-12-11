@@ -13,6 +13,7 @@ use App\Http\Controllers\adminController;
 use App\Http\Controllers\superadminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
+
 use Illuminate\Support\Facades\Auth;
 // middleware alias 'role' is registered in Kernel
 //langsung route redirect saat pertama kali buka web

@@ -10,6 +10,7 @@
             <input type="text" name="nama" class="form-control" required>
         </div>
 
+<<<<<<< HEAD
         <div class="mb-3">
             <label>Tanggal Lahir</label>
             <input type="date" name="tanggal_lahir" class="form-control">
@@ -32,3 +33,18 @@
         <button class="btn btn-primary">Simpan</button>
     </form>
 @endsection
+=======
+    <div class="mb-3">
+        <label>Tanggal Lahir</label>
+        <input type="date" name="tanggal_lahir" class="form-control">
+    </div>
+
+    <div class="mb-3">
+        <label>Cabang Olahraga</label>
+        <input type="text" name="kategori_renang" class="form-control">
+    </div>
+
+    <button class="btn btn-primary">Simpan</button>
+</form>
+@endsection
+>>>>>>> 26333f47378d864bfee574953ec54e984367006c

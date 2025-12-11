@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -85,16 +86,16 @@
         <!-- Logo -->
         <div class="d-flex align-items-center">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/PRSI_logo.png/120px-PRSI_logo.png"
-                 alt="Logo" height="45" style="margin-right:10px;">
+                alt="Logo" height="45" style="margin-right:10px;">
             <span style="font-size:22px;font-weight:bold;color:#ff3b3b;">
                 Swim<br>Base
             </span>
         </div>
 
         <!-- Search -->
-        <div class="d-flex align-items-center" style="color:#bfbfbf;font-size:14px;">
-            <span style="margin-right:6px;">🔍</span> Search
-            <div style="width:150px;border-bottom:1px solid #666;margin-left:8px;"></div>
+        <div style="display: flex; align-items:center; gap:10px;">
+            <img src="{{ asset('images/search-icon.png') }}" style="height:18px;">
+            <input type="search" placeholder="Search" class="search-box">
         </div>
 
     </div>
@@ -130,4 +131,5 @@
     </div>
 
 </body>
+
 </html>
