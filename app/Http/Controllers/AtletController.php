@@ -27,15 +27,19 @@ class AtletController extends Controller
     {
         $request->validate([
             'nama' => 'required|string',
+            'nisn' => 'nullable|string',
             'tanggal_lahir' => 'nullable|date',
-            'kategori_renang' => 'nullable|string'
+            'gender' => 'nullable|in:L,P',
+            'cabang_olahraga' => 'nullable|string'
         ]);
 
         Atlet::create([
             'klub_id' => Auth::user()->id ?? null, // asumsi user mewakili klub
             'nama' => $request->nama,
+            'nisn' => $request->nisn,
             'tanggal_lahir' => $request->tanggal_lahir,
-            'kategori_renang' => $request->kategori_renang
+            'gender' => $request->gender,
+            'cabang_olahraga' => $request->cabang_olahraga
         ]);
 
         return redirect()->route('atlet.index')->with('success', 'Atlet berhasil ditambahkan');
@@ -54,15 +58,13 @@ class AtletController extends Controller
 
         $request->validate([
             'nama' => 'required|string',
+            'nisn' => 'nullable|string',
             'tanggal_lahir' => 'nullable|date',
-            'kategori_renang' => 'nullable|string'
+            'gender' => 'nullable|in:L,P',
+            'cabang_olahraga' => 'nullable|string'
         ]);
 
-<<<<<<<<< Temporary merge branch 1
-        $atlet->update($request->only(['nama','tanggal_lahir','kategori_renang']));
-=========
-        $atlet->update($request->only(['nama','tanggal_lahir','gender','cabang_olahraga']));
->>>>>>>>> Temporary merge branch 2
+        $atlet->update($request->only(['nama','nisn','tanggal_lahir','gender','cabang_olahraga']));
 
         return redirect()->route('atlet.index')->with('success', 'Atlet diperbarui');
     }
