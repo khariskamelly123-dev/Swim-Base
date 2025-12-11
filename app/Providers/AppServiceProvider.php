@@ -51,5 +51,13 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(Login::class, [LoginListener::class, 'handle']);
         Event::listen(Logout::class, [LogoutListener::class, 'handle']);
         Event::listen(Authenticated::class, [AuthenticatedListener::class, 'handle']);
+
+        // Ensure 'role' middleware alias is available in case Kernel registration is not loaded early
+        if ($this->app->bound('router')) {
+            $router = $this->app->make('router');
+            if (method_exists($router, 'aliasMiddleware')) {
+                $router->aliasMiddleware('role', \App\Http\Middleware\CheckRole::class);
+            }
+        }
     }
 }

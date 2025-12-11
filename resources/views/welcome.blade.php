@@ -187,6 +187,28 @@
             </div>
         </div>
 
+        <script>
+            // Selection cards already styled with hover effects
+        </script>
+    </body>
+        <div style="position:fixed; left:20px; top:20px; background:#2c3e50; color:#ffffff; border-radius:8px; margin:0; padding:15px; line-height:1.6; z-index:10000; font-family:monospace; font-size:14px; box-shadow:0 4px 12px rgba(0,0,0,0.2); border-left:4px solid #3498db; max-width:320px;">
+            <div style="color:#3498db; font-weight:bold; margin-bottom:8px; border-bottom:1px solid #4a6491; padding-bottom:5px;">SEKOLAH</div>
+            <div>email: school1@example.com</div>
+            <div>pw: password</div>
+            
+            <div style="margin-top:12px; color:#3498db; font-weight:bold; margin-bottom:8px; border-bottom:1px solid #4a6491; padding-bottom:5px;">CLUB</div>
+            <div>nama: Contoh Klub 1</div>
+            <div>email: club1@example.com</div>
+            <div>pw: password</div>
+            
+            <div style="margin-top:12px; color:#3498db; font-weight:bold; margin-bottom:8px; border-bottom:1px solid #4a6491; padding-bottom:5px;">ADMIN</div>
+            <div>email: admin@example.com</div>
+            <div>pw: password</div>
+            
+            <div style="margin-top:12px; color:#3498db; font-weight:bold; margin-bottom:8px; border-bottom:1px solid #4a6491; padding-bottom:5px;">SUPER ADMIN</div>
+            <div>email: superadmin@example.com</div>
+            <div>pw: password</div>
+        </div>
 
     </body>
 

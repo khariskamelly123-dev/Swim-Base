@@ -12,14 +12,21 @@ class CheckRole
      * Handle an incoming request.
      * Expects route action 'roles' to contain comma-separated allowed roles.
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, $roles = null)
     {
-        // Get allowed roles from route action 'roles'
-        $rolesValue = $request->route() ? $request->route()->getAction('roles') : null;
+        // Roles may be passed as middleware parameter (e.g. ->middleware('role:admin'))
+        // or as a route default action 'roles'. Prefer middleware param if provided.
+        $rolesValue = $roles ?: ($request->route() ? $request->route()->getAction('roles') : null);
 
+        // If no roles defined, allow any authenticated user (backwards-compatible)
         if (!$rolesValue) {
-            // If no roles defined, deny by default
-            return abort(403, 'Access denied (no role specified)');
+            // Allow if any known guard is authenticated or session indicates club/sekolah
+            if (Auth::guard('web')->check() || (method_exists(Auth::class, 'guard') && Auth::guard('club')->check()) || (method_exists(Auth::class, 'guard') && Auth::guard('sekouniv')->check()) || session()->has('club_id') || session()->has('sekouniv_id')) {
+                return $next($request);
+            }
+
+            // Not authenticated — redirect to login
+            return redirect('/')->withErrors(['auth' => 'Anda harus login untuk mengakses halaman ini.']);
         }
 
         $allowed = array_map('trim', explode(',', (string) $rolesValue));
