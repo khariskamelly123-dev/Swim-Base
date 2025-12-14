@@ -3,7 +3,7 @@
 @section('title', 'Manajemen Klub - Swim Base')
 
 @section('content')
-    @include('layouts.sidebar.club')
+    @include('layouts.sidebar.admin')
     @include('layouts.header', ['title' => 'Management Klub', 'link' => route('club.create')])
 
     <style>
@@ -105,6 +105,7 @@
                     <tr>
                         <th>No</th>
                         <th>Nama Club</th>
+                        <th>kota</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -113,6 +114,7 @@
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $club->name }}</td>
+                            <td>{{ $club->city }}</td>
                             <td>
                                 <a href="{{ route('club.edit', $club->id) }}" class="btn-action edit">Edit</a>
                                 <a href="{{ route('club.delete', $club->id) }}" class="btn-action delete">Delete</a>

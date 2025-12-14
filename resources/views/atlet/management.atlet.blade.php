@@ -3,7 +3,7 @@
 @section('title', 'Manajemen Atlet - Swim Base')
 
 @section('content')
-@include('layouts.sidebar.atlet')
+@include('layouts.sidebar.admin')
 @include('layouts.header', [
     'title' => 'Management Atlet', 
     'link' => route('atlet.create')
@@ -79,6 +79,7 @@
                     <th>Nama Atlet</th>
                     <th>DoB</th>
                     <th>Club</th>
+                    <th>rekor waktu</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -91,6 +92,7 @@
                         <td>{{ $atlet->name }}</td>
                         <td>{{ $atlet->dob }}</td>
                         <td>{{ $atlet->club }}</td>
+                        <td>{{ $atlet->record_time }}</td>
                         <td>
                             <a href="{{ route('atlet.edit', $atlet->id) }}" class="btn-action edit">Edit</a>
                             <a href="{{ route('atlet.delete', $atlet->id) }}" class="btn-action delete">Delete</a>

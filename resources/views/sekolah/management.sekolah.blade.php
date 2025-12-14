@@ -3,7 +3,7 @@
 @section('title', 'Manajemen Sekolah - Swim Base')
 
 @section('content')
-@include('layouts.sidebar.sekolah')
+@include('layouts.sidebar.admin')
 @include('layouts.header', [
     'title' => 'Management Sekolah', 
     'link' => route('sekolah.create')
