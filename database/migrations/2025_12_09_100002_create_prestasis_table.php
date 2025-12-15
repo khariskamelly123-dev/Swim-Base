@@ -11,7 +11,11 @@ return new class extends Migration
         Schema::create('prestasis', function (Blueprint $table) {
             $table->id();
             $table->foreignId('atlet_id')->constrained('atlets')->cascadeOnDelete();
-            $table->foreignId('klub_id')->nullable()->constrained('club_data')->nullOnDelete();
+            $table->unsignedBigInteger('klub_id')->nullable();
+            $table->foreign('klub_id')
+              ->references('id')
+              ->on('clubs')
+              ->onDelete('set null');
             $table->foreignId('event_id')->nullable()->constrained('events')->nullOnDelete();
             $table->foreignId('kategori_id')->nullable()->constrained('kategoris')->nullOnDelete();
             $table->enum('medal', ['gold','silver','bronze','none'])->default('none');

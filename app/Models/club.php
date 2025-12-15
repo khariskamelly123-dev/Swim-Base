@@ -9,14 +9,15 @@ class Club extends Authenticatable
 {
     use Notifiable;
 
-    protected $table = 'club_data';
+    protected $table = 'clubs';
 
     protected $fillable = [
         'nama_klub',
+        'provinsi',
+        'kota',
         'alamat_klub',
         'kontak_club',
         'email_resmi',
-        'pelatih',
         'password',
     ];
 

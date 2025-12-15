@@ -12,14 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('clubs', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('name');
-            $table->string('alamat')->nullable();
-            $table->string('jenis_admin')->nullable();
-            $table->string('kontak')->nullable();
-            $table->timestamps();
-        });
+        $table->id();
+        $table->string('nama_klub');
+        $table->string('provinsi')->nullable();
+        $table->string('kota')->nullable();
+        $table->text('alamat_klub')->nullable();
+        $table->string('kontak_club')->nullable();
+        $table->string('email_resmi')->unique();
+        $table->string('password');
+        $table->timestamps();
+    });
     }
 
     /**

@@ -16,9 +16,9 @@ class DashboardController extends Controller
         return view('dashboard.dashboard_user');
     }
 
-    public function dashboard_afterlogin()
+    public function dashboard_klub()
     {
-        return view('dashboard.dashboard_afterlogin');
+        return view('dashboard.dashboard_klub');
     }
     //dashboard admin
     public function admin()

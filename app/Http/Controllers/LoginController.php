@@ -58,7 +58,7 @@ class LoginController extends Controller
         $sekouniv = Auth::guard('sekouniv')->user();
         session(['sekouniv_id' => $sekouniv->id, 'sekouniv_name' => $sekouniv->nama_sekolah_universitas]);
 
-        return redirect()->route('dashboard_afterlogin')->with('success', 'Login berhasil');
+        return redirect()->route('dashboard_klublogin')->with('success', 'Login berhasil');
     }
 
     public function sekouniv_logout()

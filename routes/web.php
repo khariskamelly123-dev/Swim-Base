@@ -13,8 +13,8 @@ use App\Http\Controllers\adminController;
 use App\Http\Controllers\superadminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
-
 use Illuminate\Support\Facades\Auth;
+
 
 // middleware alias 'role' is registered in Kernel
 //langsung route redirect saat pertama kali buka web
@@ -23,9 +23,9 @@ Route::get('/', function () {
 });
 
 // DASHBOARD
-Route::get('/dashboard_afterlogin', [DashboardController::class, 'dashboard_afterlogin'])
-    ->middleware('role:klub,sekolah,admin,superadmin') // <--- GABUNG DI SINI
-    ->name('dashboard_afterlogin');
+Route::get('/dashboard_klub', [DashboardController::class, 'dashboard_klub'])
+    ->middleware('role:klub') // <--- GABUNG DI SINI
+    ->name('dashboard_klub');
 
 
 
@@ -60,10 +60,6 @@ Route::post('/schuniv_regis', [LoginController::class, 'sekouniv_register'])->na
 Route::post('/sekouniv_login_process', [LoginController::class, 'sekouniv_login_process'])->middleware('throttle:5,1')->name('sekouniv.login.process');
 Route::post('/sekouniv_logout', [LoginController::class, 'sekouniv_logout'])->name('sekouniv.logout');
 
-// register
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
 
 
 //profile
@@ -161,3 +157,18 @@ Route::get('/dashboard_admin', [DashboardController::class, 'admin'])
 
 // (logout handled by controller above)
 
+Route::middleware(['auth', 'role:klub'])->group(function () {
+    
+    // Dashboard
+    Route::get('/dashboard-klub', [DashboardController::class, 'dashboard_klub'])
+        ->name('dashboard_klub');
+    
+    // Profil
+    Route::get('/profil', [DashboardController::class, 'profil'])
+        ->name('profil.index');
+
+    // Data Atlet, Kategori, Event, dll
+    Route::resource('atlet', AtletController::class);
+    Route::resource('kategori', KategoriController::class);
+    Route::resource('event', EventController::class);
+});

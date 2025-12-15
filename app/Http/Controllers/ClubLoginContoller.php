@@ -20,22 +20,33 @@ class ClubLoginContoller extends Controller
     }
 
     public function club_register(Request $request)
-    {
-        $validated = $request->validate([
-            'nama_klub' => 'required|string|max:255',
-            'alamat_klub' => 'required|string',
-            'kontak_club' => 'required|string|max:20',
-            'email_resmi' => 'required|email|unique:club_data,email_resmi',
-            'pelatih' => 'required|string|max:255',
-            'password' => 'required|string|min:6',
-        ]);
+{
+    $validated = $request->validate([
+        'nama_klub'     => 'required|string|max:255',
+        'alamat_detail' => 'required|string',
+        'provinsi_nama' => 'required|string',
+        'kota'          => 'required|string',
+        'kontak_club'   => 'required|string|max:20',
+        'email_resmi'   => 'required|email|unique:clubs,email_resmi',
+        'password'      => 'required|string|min:6',
+    ]);
 
-        $validated['password'] = Hash::make($validated['password']);
 
-        Club::create($validated);
+    $dataToSave = [
+        'nama_klub'   => $validated['nama_klub'],
+        'provinsi'    => $validated['provinsi_nama'], 
+        'kota'        => $validated['kota'],
+        'alamat_klub' => $validated['alamat_detail'],
+        
+        'kontak_club' => $validated['kontak_club'],
+        'email_resmi' => $validated['email_resmi'],
+        'password'    => Hash::make($validated['password']),
+    ];
 
-        return redirect()->route('club.login')->with('success', 'Registrasi klub berhasil. Silakan login.');
-    }
+    Club::create($dataToSave);
+
+    return redirect()->route('club.login')->with('success', 'Registrasi klub berhasil. Silakan login.');
+}
 
     public function club_login_process(Request $request)
     {
@@ -60,7 +71,7 @@ class ClubLoginContoller extends Controller
         $club = Auth::guard('club')->user();
         session(['club_id' => $club->id, 'club_name' => $club->nama_klub]);
 
-        return redirect()->route('dashboard_afterlogin')->with('success', 'Login berhasil');
+        return redirect()->route('dashboard_klub')->with('success', 'Login berhasil');
     }
 
     public function club_logout()

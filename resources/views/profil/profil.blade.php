@@ -1,71 +1,93 @@
-@extends('layouts.app')
+@extends('layouts.layout') {{-- Pastikan ini sesuai dengan nama layout utama Anda --}}
 
 @section('content')
-    <div class="container">
 
-        <h1 class="mb-4">Profil Pengguna</h1>
+    <style>
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%; /* Membuat gambar bulat */
+            border: 5px solid #f0f0f0;
+            margin-bottom: 20px;
+        }
+        .card-profile {
+            max-width: 600px;
+            margin: 0 auto; /* Tengah layar */
+        }
+    </style>
 
-        {{-- -atlet --}}
-        @if(Auth::user()->role == 'atlet')
-            <div class="card shadow">
+    <div class="container mt-5">
+        <h1 class="mb-4 text-center text-white">Profil Pengguna</h1>
+
+        {{-- ========================================================= --}}
+        {{-- LOGIKA 1: JIKA YANG LOGIN ADALAH KLUB (Guard: club)       --}}
+        {{-- ========================================================= --}}
+        @if(Auth::guard('club')->check())
+            @php $club = Auth::guard('club')->user(); @endphp
+            
+            <div class="card shadow card-profile">
                 <div class="card-body text-center">
-                    <img src=>
-                    <h3>Profil Atlet</h3>
+                    {{-- Gambar Placeholder (Inisial Nama Klub) --}}
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode($club->nama_klub) }}&background=random&size=150" 
+                         alt="Foto Profil" class="profile-img shadow-sm">
+                    
+                    <h3>{{ $club->nama_klub }}</h3>
+                    <span class="badge bg-primary mb-3">Akun Klub</span>
 
-                    <p><b>Nama:</b> Atlet Dummy</p>
-                    <p><b>Cabang:</b> Renang</p>
-                    <p><b>Umur:</b> 17 Tahun</p>
+                    <div class="text-start mt-4 px-4">
+                        <p><strong>Email Resmi:</strong> <br> {{ $club->email_resmi }}</p>
+                        <p><strong>Kontak (WA):</strong> <br> {{ $club->kontak_club }}</p>
+                        <p><strong>Alamat:</strong> <br> {{ $club->alamat_klub }}</p>
+                    </div>
 
-                    <a href="#" class="btn btn-primary mt-3">Edit Profil</a>
+                    <a href="#" class="btn btn-warning mt-3 w-100">Edit Profil Klub</a>
                 </div>
             </div>
         @endif
 
 
-        {{-- klub --}}
-        @if(Auth::user()->role == 'klub')
-            <div class="card shadow">
+        {{-- ========================================================= --}}
+        {{-- LOGIKA 2: JIKA YANG LOGIN ADALAH USER BIASA (Guard: web)  --}}
+        {{-- (Atlet, Admin, Superadmin ada di tabel users biasa)      --}}
+        {{-- ========================================================= --}}
+        @if(Auth::guard('web')->check())
+            @php $user = Auth::user(); @endphp
+
+            <div class="card shadow card-profile">
                 <div class="card-body text-center">
-                    <img src=>
-                    <h3>Profil Klub / Sekolah</h3>
+                    {{-- Gambar Placeholder (Inisial Nama User) --}}
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=random&size=150" 
+                         alt="Foto Profil" class="profile-img shadow-sm">
+                    
+                    <h3>{{ $user->name }}</h3>
+                    
+                    {{-- Badge Role --}}
+                    @if($user->role == 'atlet')
+                        <span class="badge bg-success mb-3">Atlet Renang</span>
+                    @elseif($user->role == 'admin')
+                        <span class="badge bg-info mb-3">Admin Verifikator</span>
+                    @elseif($user->role == 'superadmin')
+                        <span class="badge bg-danger mb-3">Super Admin</span>
+                    @endif
 
-                    <p><b>Nama Klub:</b> Klub Renang Berlian</p>
-                    <p><b>Alamat:</b> Jakarta</p>
-                    <p><b>Pelatih:</b> Coach Dummy</p>
+                    <div class="text-start mt-4 px-4">
+                        <p><strong>Email:</strong> <br> {{ $user->email }}</p>
+                        
+                        {{-- Tampilkan detail khusus Atlet --}}
+                        @if($user->role == 'atlet')
+                            {{-- Contoh jika ada kolom lain di tabel users, misal 'umur' atau 'jenis_kelamin' --}}
+                            {{-- <p><strong>Umur:</strong> <br> {{ $user->umur ?? '-' }} Tahun</p> --}}
+                            <p class="text-muted small">Detail atlet lainnya dapat ditambahkan di sini.</p>
+                        @endif
 
-                    <a href="#" class="btn btn-primary mt-3">Edit Profil</a>
-                </div>
-            </div>
-        @endif
+                        {{-- Tampilkan detail khusus Admin --}}
+                        @if($user->role == 'admin' || $user->role == 'superadmin')
+                            <p><strong>Status:</strong> <br> Staff Aktif</p>
+                        @endif
+                    </div>
 
-
-        {{-- admin --}}
-        @if(Auth::user()->role == 'admin')
-            <div class="card shadow">
-                <div class="card-body text-center">
-                    <img src=>
-                    <h3>Profil Admin</h3>
-
-                    <p><b>Nama Admin:</b> Admin Dummy</p>
-                    <p><b>Bagian:</b> Verifikasi Data</p>
-
-                    <a href="#" class="btn btn-primary mt-3">Edit Profil</a>
-                </div>
-            </div>
-        @endif
-
-
-        {{-- superadmin --}}
-        @if(Auth::user()->role == 'superadmin')
-            <div class="card shadow">
-                <div class="card-body text-center">
-                    <img src=>
-                    <h3>Profil Super Admin</h3>
-
-                    <p><b>Nama:</b> Super Admin Dummy</p>
-                    <p><b>Kewenangan:</b> Full Access</p>
-
-                    <a href="#" class="btn btn-primary mt-3">Edit Profil</a>
+                    <a href="#" class="btn btn-primary mt-3 w-100">Edit Profil</a>
                 </div>
             </div>
         @endif
