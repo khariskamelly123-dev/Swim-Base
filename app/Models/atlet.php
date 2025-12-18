@@ -14,6 +14,7 @@ class Atlet extends Model
     protected $fillable = [
         'klub_id',
         'nama',
+        'tempat',
         'tanggal_lahir',
         'kategori_renang'
     ];

@@ -50,7 +50,7 @@
                     <td>{{ $i + 1 }}</td>
                     <td>{{ $a->nama }}</td>
                     <td>{{ $a->tanggal_lahir }}</td>
-                    <td>{{ $a->cabang_olahraga }}</td>
+                    <td>{{ $a->kategori_renang }}</td>
                     <td>
                         @if($role == 'klub')
                             <a href="{{ route('pengajuan.formEdit', $a->id) }}" class="btn btn-sm btn-info">Ajukan Edit</a>

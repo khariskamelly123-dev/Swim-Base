@@ -44,7 +44,7 @@ class CheckRole
 
         // club guard
         if (method_exists(Auth::class, 'guard') && Auth::guard('club')->check()) {
-            $currentRoles[] = 'klub';
+            $currentRoles[] = 'club';
         }
 
         // sekouniv guard
@@ -54,7 +54,7 @@ class CheckRole
 
         // Fallback: session-based keys (backwards compatibility)
         if (session()->has('club_id')) {
-            $currentRoles[] = 'klub';
+            $currentRoles[] = 'club';
         }
 
         if (session()->has('sekouniv_id')) {

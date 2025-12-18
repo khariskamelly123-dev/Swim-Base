@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PengajuanController;
 use App\Http\Controllers\AtletController;
-use App\Http\Controllers\ClubLoginContoller;
+use App\Http\Controllers\ClubController;
 use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\PrestasiApiController;
 use App\Http\Controllers\KategoriController;
@@ -12,6 +12,7 @@ use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\superadminController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SchunivController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Auth;
 
@@ -33,11 +34,11 @@ Route::get('/dashboard_klub', [DashboardController::class, 'dashboard_klub'])
 Route::get('/welcome', [LoginController::class, 'welcome_selection'])->name('welcome');
 
 // CLUB
-Route::get('/club_login', [ClubLoginContoller::class, 'club'])->name('club.login');
-Route::get('/regis_club', [ClubLoginContoller::class, 'regis_club'])->name('club.register');
-Route::post('/regis_club', [ClubLoginContoller::class, 'club_register'])->name('club.register.process');
-Route::post('/club_login_process', [ClubLoginContoller::class, 'club_login_process'])->middleware('throttle:5,1')->name('club.login.process');
-Route::post('/club_logout', [ClubLoginContoller::class, 'club_logout'])->name('club.logout');
+Route::get('/club_login', [ClubController::class, 'club'])->name('club.login');
+Route::get('/regis_club', [ClubController::class, 'regis_club'])->name('club.register');
+Route::post('/regis_club', [ClubController::class, 'club_register'])->name('club.register.process');
+Route::post('/club_login_process', [ClubController::class, 'club_login_process'])->middleware('throttle:5,1')->name('club.login.process');
+Route::post('/club_logout', [ClubController::class, 'club_logout'])->name('club.logout');
 
 
 // login admin
@@ -52,13 +53,28 @@ Route::post('/regis_admin', [adminController::class, 'admin_register_process'])-
 Route::get('/superadmin_login', [superadminController::class, 'superadmin'])->name('superadmin_login');
 Route::post('/superadmin_login_process', [superadminController::class, 'superadmin_login_process'])->name('superadmin.login.process');
 
+// SEKOLAH / UNIVERSITAS
+Route::get('/', [SchunivController::class, 'welcome_selection'])->name('welcome');
+Route::middleware('guest:sekouniv')->group(function () {
+    // Login
+    Route::get('/schuniv/login', [SchunivController::class, 'schuniv'])->name('schuniv.login');
+    Route::post('/schuniv/login', [SchunivController::class, 'schuniv_login_process'])->name('schuniv.login.process');
+    
+    // Register
+    Route::get('/schuniv/register', [SchunivController::class, 'regis_schuniv'])->name('schuniv.register');
+    Route::post('/schuniv/register', [SchunivController::class, 'schuniv_register'])->name('schuniv.register.process');
+});
 
-// seko_univ
-Route::get('/login', [LoginController::class, 'seko_univ'])->name('login');
-Route::get('/schuniv_regis', [LoginController::class, 'regis_seko_univ'])->name('sekouniv_register');
-Route::post('/schuniv_regis', [LoginController::class, 'sekouniv_register'])->name('sekouniv.register.process');
-Route::post('/sekouniv_login_process', [LoginController::class, 'sekouniv_login_process'])->middleware('throttle:5,1')->name('sekouniv.login.process');
-Route::post('/sekouniv_logout', [LoginController::class, 'sekouniv_logout'])->name('sekouniv.logout');
+Route::middleware(['auth:sekouniv'])->group(function () {
+    
+    // Dashboard Sekolah
+    Route::get('/schuniv/dashboard', function () {
+        return view('dashboard_schuniv');
+    })->name('dashboard_schuniv');
+
+    // Logout Sekolah
+    Route::post('/schuniv/logout', [SchunivController::class, 'schuniv_logout'])->name('schuniv.logout');
+});
 
 
 
@@ -155,20 +171,26 @@ Route::get('/dashboard_admin', [DashboardController::class, 'admin'])
 
 
 
-// (logout handled by controller above)
 
-Route::middleware(['auth', 'role:klub'])->group(function () {
+Route::middleware(['auth:club'])->group(function () {
     
     // Dashboard
-    Route::get('/dashboard-klub', [DashboardController::class, 'dashboard_klub'])
+    Route::get('/dashboard_klub', [DashboardController::class, 'dashboard_klub'])
         ->name('dashboard_klub');
     
     // Profil
     Route::get('/profil', [DashboardController::class, 'profil'])
         ->name('profil.index');
 
-    // Data Atlet, Kategori, Event, dll
     Route::resource('atlet', AtletController::class);
+    Route::post('/atlet/{id}/request-update', [PengajuanController::class, 'pengajuanEdit'])->name('atlet.request_update');
+    Route::post('/atlet/{id}/request-delete', [PengajuanController::class, 'pengajuanHapus'])->name('atlet.request_delete');
     Route::resource('kategori', KategoriController::class);
     Route::resource('event', EventController::class);
+});
+
+Route::middleware(['auth:superadmin'])->group(function () {
+    Route::get('/pengajuan', [PengajuanController::class, 'index'])->name('admin.pengajuan.index');
+    Route::post('/pengajuan/{id}/approve', [PengajuanController::class, 'approve'])->name('admin.pengajuan.approve');
+    Route::post('/pengajuan/{id}/reject', [PengajuanController::class, 'reject'])->name('admin.pengajuan.reject');
 });

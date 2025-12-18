@@ -7,7 +7,7 @@ use App\Models\Club;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
-class ClubLoginContoller extends Controller
+class ClubController extends Controller
 {
     public function club()
     {

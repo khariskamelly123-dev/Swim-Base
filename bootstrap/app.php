@@ -3,7 +3,8 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use App\Http\Middleware\CheckRole; // <--- 1. Pastikan baris ini ada
+use Illuminate\Http\Request; // <--- JANGAN LUPA IMPORT INI
+use App\Http\Middleware\CheckRole; 
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -13,10 +14,28 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         
-        // 2. Tambahkan Alias di sini
+        // 1. Alias Middleware Custom Kamu
         $middleware->alias([
             'role' => CheckRole::class,
         ]);
+
+        // 2. LOGIKA REDIRECT (Ini Solusi Error Route Not Defined)
+        // Kode ini memberi tahu Laravel: "Kalau belum login, lempar ke sini..."
+        $middleware->redirectGuestsTo(function (Request $request) {
+            
+            // Jika user mencoba akses halaman klub atau atlet
+            if ($request->is('club/*') || $request->is('atlet*')) {
+                return route('club.login');
+            }
+            
+            // Jika user mencoba akses halaman sekolah
+            if ($request->is('schuniv/*')) {
+                return route('schuniv.login');
+            }
+            
+            // Default (jika bukan keduanya) lempar ke halaman welcome
+            return route('welcome');
+        });
 
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -6,21 +6,6 @@
 
 <aside class="w-72 bg-white border-r border-gray-100 flex-shrink-0 flex flex-col transition-all duration-300 shadow-[4px_0_24px_rgba(0,0,0,0.02)] z-20">
     
-    {{-- HEADER --}}
-    <div class="h-20 flex items-center px-8 border-b border-gray-50">
-        <div class="w-10 h-10 bg-gradient-to-br from-red-600 to-red-500 rounded-xl flex items-center justify-center text-white font-bold text-sm mr-3 shadow-red-200 shadow-lg">
-            <i class="fas fa-swimmer"></i>
-        </div>
-        <div>
-            <span class="text-xl font-bold text-gray-900 tracking-tight block leading-none">
-                Swim<span class="text-red-600">Base</span>
-            </span>
-            <span class="text-[10px] text-gray-400 font-medium tracking-wider uppercase">
-                Club Dashboard
-            </span>
-        </div>
-    </div>
-
     {{-- PROFILE CLUB --}}
     <div class="px-6 py-6">
         <div class="p-4 bg-gradient-to-r from-gray-50 to-white border border-gray-100 rounded-2xl flex items-center gap-4 shadow-sm">
@@ -50,15 +35,26 @@
             Utama
         </p>
 
+        {{-- DASHBOARD --}}
         <a href="{{ route('dashboard_klub') }}"
-           class="flex items-center px-4 py-3 text-sm font-semibold bg-red-50 text-red-700 rounded-xl group transition-all shadow-sm ring-1 ring-red-100">
-            <i class="fas fa-th-large w-6 text-center text-red-600"></i>
+           class="flex items-center px-4 py-3 text-sm rounded-xl group transition-all 
+           {{ request()->routeIs('dashboard_klub') 
+                ? 'bg-red-50 text-red-700 font-semibold shadow-sm ring-1 ring-red-100' 
+                : 'font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+            <i class="fas fa-th-large w-6 text-center 
+            {{ request()->routeIs('dashboard_klub') ? 'text-red-600' : 'text-gray-400 group-hover:text-red-500' }}"></i>
             Dashboard
         </a>
 
-        <a href="profil.index"
-           class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl transition-colors">
-            <i class="fas fa-user-circle w-6 text-center text-gray-400 group-hover:text-red-500"></i>
+        {{-- PROFIL KLUB --}}
+        {{-- Pastikan nama route di web.php adalah 'profil.index' --}}
+        <a href="{{ route('profil.index') }}"
+           class="flex items-center px-4 py-3 text-sm rounded-xl group transition-all 
+           {{ request()->routeIs('profil.index') 
+                ? 'bg-red-50 text-red-700 font-semibold shadow-sm ring-1 ring-red-100' 
+                : 'font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+            <i class="fas fa-user-circle w-6 text-center 
+            {{ request()->routeIs('profil.index') ? 'text-red-600' : 'text-gray-400 group-hover:text-red-500' }}"></i>
             Profil Klub
         </a>
 
@@ -66,15 +62,26 @@
             Manajemen Data
         </p>
 
-        <a href="data.klub"
-           class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl transition-colors">
-            <i class="fas fa-swimmer w-6 text-center text-gray-400 group-hover:text-red-500"></i>
+        {{-- DATA ATLET --}}
+        <a href="{{ route('atlet.index') }}"
+           class="flex items-center px-4 py-3 text-sm rounded-xl group transition-all 
+           {{ request()->routeIs('atlet*') 
+                ? 'bg-red-50 text-red-700 font-semibold shadow-sm ring-1 ring-red-100' 
+                : 'font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+            <i class="fas fa-swimmer w-6 text-center 
+            {{ request()->routeIs('atlet*') ? 'text-red-600' : 'text-gray-400 group-hover:text-red-500' }}"></i>
             Data Atlet
         </a>
 
-        <a href="#"
-           class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl transition-colors">
-            <i class="fas fa-layer-group w-6 text-center text-gray-400 group-hover:text-red-500"></i>
+        {{-- KATEGORI RENANG --}}
+        {{-- Ganti 'kategori.index' dengan nama route aslimu --}}
+        <a href="{{ route('kategori.index') ?? '#' }}"
+           class="flex items-center px-4 py-3 text-sm rounded-xl group transition-all 
+           {{ request()->routeIs('kategori.*') 
+                ? 'bg-red-50 text-red-700 font-semibold shadow-sm ring-1 ring-red-100' 
+                : 'font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+            <i class="fas fa-layer-group w-6 text-center 
+            {{ request()->routeIs('kategori.*') ? 'text-red-600' : 'text-gray-400 group-hover:text-red-500' }}"></i>
             Kategori Renang
         </a>
 
@@ -82,9 +89,15 @@
             Aktivitas
         </p>
 
-        <a href=""
-           class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl transition-colors">
-            <i class="fas fa-calendar-alt w-6 text-center text-gray-400 group-hover:text-red-500"></i>
+        {{-- MANAJEMEN EVENT --}}
+        {{-- Ganti 'event.index' dengan nama route aslimu --}}
+        <a href="{{ route('event.index') ?? '#' }}"
+           class="flex items-center px-4 py-3 text-sm rounded-xl group transition-all 
+           {{ request()->routeIs('event.*') 
+                ? 'bg-red-50 text-red-700 font-semibold shadow-sm ring-1 ring-red-100' 
+                : 'font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+            <i class="fas fa-calendar-alt w-6 text-center 
+            {{ request()->routeIs('event.*') ? 'text-red-600' : 'text-gray-400 group-hover:text-red-500' }}"></i>
             Manajemen Event
         </a>
 
