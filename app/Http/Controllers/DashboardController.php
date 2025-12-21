@@ -20,6 +20,11 @@ class DashboardController extends Controller
     {
         return view('dashboard.dashboard_klub');
     }
+
+    public function dashboard_schuniv()
+    {
+        return view('dashboard.dashboard_schuniv');
+    }
     //dashboard admin
     public function admin()
 {
