@@ -14,12 +14,12 @@
 <<<<<<<<< Temporary merge branch 1
     <div class="mb-3">
         <label>Tanggal Lahir (baru)</label>
-        <input type="date" name="perubahan[tanggal_lahir]" class="form-control" value="{{ $atlet->tanggal_lahir }}">
+        <input type="date" name="perubahan[birth_date]" class="form-control" value="{{ $atlet->birth_date }}">
     </div>
 =========
         <div class="mb-3">
             <label>Tanggal Lahir (baru)</label>
-            <input type="date" name="perubahan[tanggal_lahir]" class="form-control" value="{{ $atlet->tanggal_lahir }}">
+            <input type="date" name="perubahan[birth_date]" class="form-control" value="{{ $atlet->birth_date }}">
         </div>
 
         <div class="mb-3">

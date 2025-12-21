@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Club;
 use Illuminate\Support\Facades\Hash;
@@ -9,79 +10,111 @@ use Illuminate\Support\Facades\Auth;
 
 class ClubController extends Controller
 {
-    public function club()
+    /**
+     * Menampilkan Form Login Club
+     * Route: club.login
+     */
+    public function showLoginForm()
     {
-        return view('auth.club.club_login');
+        return view('auth.club.login');
     }
 
-    public function regis_club()
+    /**
+     * Proses Login Club
+     * Route: club.login.process
+     */
+    public function loginProcess(Request $request)
     {
-        return view('auth.club.regis_club');
-    }
-
-    public function club_register(Request $request)
-{
-    $validated = $request->validate([
-        'nama_klub'     => 'required|string|max:255',
-        'alamat_detail' => 'required|string',
-        'provinsi_nama' => 'required|string',
-        'kota'          => 'required|string',
-        'kontak_club'   => 'required|string|max:20',
-        'email_resmi'   => 'required|email|unique:clubs,email_resmi',
-        'password'      => 'required|string|min:6',
-    ]);
-
-
-    $dataToSave = [
-        'nama_klub'   => $validated['nama_klub'],
-        'provinsi'    => $validated['provinsi_nama'], 
-        'kota'        => $validated['kota'],
-        'alamat_klub' => $validated['alamat_detail'],
-        
-        'kontak_club' => $validated['kontak_club'],
-        'email_resmi' => $validated['email_resmi'],
-        'password'    => Hash::make($validated['password']),
-    ];
-
-    Club::create($dataToSave);
-
-    return redirect()->route('club.login')->with('success', 'Registrasi klub berhasil. Silakan login.');
-}
-
-    public function club_login_process(Request $request)
-    {
-        $validated = $request->validate([
-            'email_resmi' => 'required|email',
+        // 1. Validasi Input (Pastikan di form HTML name="email" dan name="password")
+        $credentials = $request->validate([
+            'email'    => 'required|email', // Dulu: email_resmi
             'password' => 'required|string',
         ]);
 
-        // Attempt to authenticate using the 'club' guard
-        $credentials = [
-            'email_resmi' => $validated['email_resmi'],
-            'password' => $validated['password'],
-        ];
+        // 2. Coba Login menggunakan Guard 'club'
+        // Laravel otomatis mencocokkan field 'email' & 'password' ke database
+        if (Auth::guard('club')->attempt($credentials)) {
+            
+            // Regenerate session untuk keamanan
+            $request->session()->regenerate();
 
-        if (!Auth::guard('club')->attempt($credentials)) {
-            return back()->withErrors([
-                'email_resmi' => 'Email atau password salah.',
-            ])->onlyInput('email_resmi');
+            // Simpan info tambahan ke session jika perlu (Opsional)
+            // Sekarang pakai kolom 'name', bukan 'nama_klub'
+            $club = Auth::guard('club')->user();
+            // session(['club_name' => $club->name]); 
+
+            return redirect()->route('club.dashboard')->with('success', 'Login successful! Welcome back.');
         }
 
-        // Authentication successful, optionally store friendly name in session
-        $club = Auth::guard('club')->user();
-        session(['club_id' => $club->id, 'club_name' => $club->nama_klub]);
-
-        return redirect()->route('dashboard_klub')->with('success', 'Login berhasil');
+        // 3. Jika Gagal
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
     }
 
-    public function club_logout()
+    /**
+     * Menampilkan Form Register Club
+     * Route: club.register
+     */
+    public function showRegisterForm()
     {
-        // Logout from club guard and clear session
-        Auth::guard('club')->logout();
-        session()->forget(['club_id', 'club_name']);
-        request()->session()->invalidate();
-        request()->session()->regenerateToken();
+        return view('auth.club.register');
+    }
 
-        return redirect()->route('club.login')->with('success', 'Logout berhasil');
+    /**
+     * Proses Register Club Baru
+     * Route: club.register.process
+     */
+    public function registerProcess(Request $request)
+    {
+        // 1. Validasi Input (Sesuaikan dengan name di form HTML baru)
+        $validated = $request->validate([
+            'name'     => 'required|string|max:255', // Dulu: nama_klub
+            'address'  => 'required|string',         // Dulu: alamat_detail
+            'province' => 'required|string',         // Dulu: provinsi_nama
+            'city'     => 'required|string',         // Dulu: kota
+            'phone'    => 'required|string|max:20',  // Dulu: kontak_club
+            'email'    => 'required|email|unique:clubs,email', // Dulu: email_resmi
+            'password' => 'required|string|min:6|confirmed', // Tambahkan 'confirmed' jika ada field password_confirmation
+        ]);
+
+        // 2. Simpan ke Database menggunakan Model Club Baru
+        Club::create([
+            'name'     => $validated['name'],
+            'address'  => $validated['address'],
+            'province' => $validated['province'],
+            'city'     => $validated['city'],
+            'phone'    => $validated['phone'],
+            'email'    => $validated['email'],
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        // 3. Redirect ke halaman Login
+        return redirect()->route('club.login')->with('success', 'Registration successful. Please login.');
+    }
+
+    /**
+     * Menampilkan Profil Club
+     * Route: club.profile
+     */
+    public function profile()
+    {
+        // Ambil data user yang sedang login
+        $club = Auth::guard('club')->user();
+        return view('club.profile', compact('club'));
+    }
+
+    /**
+     * Proses Logout
+     * Route: logout (Post)
+     */
+    public function logout(Request $request)
+    {
+        Auth::guard('club')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('club.login')->with('success', 'You have been logged out.');
     }
 }

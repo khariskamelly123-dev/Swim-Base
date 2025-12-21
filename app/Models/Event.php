@@ -12,19 +12,34 @@ class Event extends Model
     protected $table = 'events';
 
     protected $fillable = [
-        'name',
         'slug',
-        'kategori_id',
-        'lokasi',
+        'name',
+        'location',
         'start_date',
         'end_date',
+        'category_id',
         'organizer_id',
         'status',
-        'description',
+        'description', // tambahkan jika ada di migrasi
+        'banner',      // tambahkan jika ada
     ];
 
-    public function kategori()
+    // --- TAMBAHKAN BAGIAN INI ---
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date'   => 'datetime',
+    ];
+    // ----------------------------
+
+    // Relasi (yang sudah ada sebelumnya)
+    public function category()
     {
-        return $this->belongsTo(Kategori::class, 'kategori_id');
+        return $this->belongsTo(Category::class);
+    }
+
+    public function organizer()
+    {
+        // Sesuaikan dengan model Admin Anda
+        return $this->belongsTo(Admin::class, 'organizer_id');
     }
 }

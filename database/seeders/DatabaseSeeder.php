@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
 use Database\Seeders\SuperAdminSeeder;
 use Database\Seeders\AdminSeeder;
 use Database\Seeders\ClubSeeder;
-use Database\Seeders\SekounivSeeder;
+use Database\Seeders\InstitutionSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
             SuperAdminSeeder::class,
             AdminSeeder::class,
             ClubSeeder::class,
-            SekounivSeeder::class,
+            InstitutionSeeder::class,
         ]);
     }
 }

@@ -36,13 +36,13 @@
         </p>
 
         {{-- DASHBOARD --}}
-        <a href="{{ route('dashboard_klub') }}"
+        <a href="{{ route('dashboard.club') }}"
            class="flex items-center px-4 py-3 text-sm rounded-xl group transition-all 
-           {{ request()->routeIs('dashboard_klub') 
+           {{ request()->routeIs('dashboard_club') 
                 ? 'bg-red-50 text-red-700 font-semibold shadow-sm ring-1 ring-red-100' 
                 : 'font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
             <i class="fas fa-th-large w-6 text-center 
-            {{ request()->routeIs('dashboard_klub') ? 'text-red-600' : 'text-gray-400 group-hover:text-red-500' }}"></i>
+            {{ request()->routeIs('dashboard_club') ? 'text-red-600' : 'text-gray-400 group-hover:text-red-500' }}"></i>
             Dashboard
         </a>
 

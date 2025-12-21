@@ -2,71 +2,96 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Admin; // Gunakan Model Admin (bukan User)
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use App\Models\Club;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\DB;
 
-class adminController extends Controller
+class AdminController extends Controller
 {
-    public function admin()
+    /**
+     * Tampilkan Halaman Login Admin
+     * Route: admin.login
+     */
+    public function showLoginForm()
     {
-        return view('auth.admin.admin_login');
+        return view('auth.admin.login'); // Pastikan file view sudah direname
     }
 
-    public function regis_admin()
+    /**
+     * Proses Login Admin
+     * Route: admin.login.process
+     */
+    public function loginProcess(Request $request)
     {
-        return view('auth.admin.regis_admin');
-    }
-
-    public function admin_login_process(Request $request)
-    {
-        $validated = $request->validate([
-            'email' => 'required|email',
+        // 1. Validasi
+        $credentials = $request->validate([
+            'email'    => 'required|email',
             'password' => 'required|string',
         ]);
 
-        if (!Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']])) {
-            return back()->withErrors(['email' => 'Email atau password salah.'])->onlyInput('email');
+        // 2. Coba Login pakai Guard 'admin'
+        // Ini akan mengecek ke tabel 'admins'
+        if (Auth::guard('admin')->attempt($credentials)) {
+            
+            $request->session()->regenerate();
+
+            // Redirect ke Dashboard Admin
+            return redirect()->route('admin.dashboard')
+                             ->with('success', 'Welcome back, Admin!');
         }
 
-        $user = Auth::user();
-        if (!isset($user->role) || $user->role !== 'admin') {
-            Auth::logout();
-            return back()->withErrors(['email' => 'Akses admin ditolak.']);
-        }
-
-        return redirect()->route('dashboard_admin')->with('success', 'Admin login successful');
+        // 3. Gagal Login
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
     }
 
-    public function admin_register_process(Request $request)
+    /**
+     * Tampilkan Halaman Register Admin
+     * Route: regis_admin (Sebaiknya admin.register)
+     * Catatan: Biasanya registrasi admin tidak dibuka untuk umum.
+     */
+    public function showRegisterForm()
+    {
+        return view('auth.admin.register');
+    }
+
+    /**
+     * Proses Register Admin Baru
+     * Route: admin.register.process
+     */
+    public function registerProcess(Request $request)
     {
         $validated = $request->validate([
-            'nama_admin' => 'required|string|max:255',
-            'jenis_admin' => 'required|string|max:255',
-            'email_resmi' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
+            'name'     => 'required|string|max:255', // Dulu: nama_admin
+            'email'    => 'required|email|unique:admins,email', // Cek unique di tabel admins
+            'password' => 'required|string|min:6|confirmed',
+            // 'type'  => 'required' (Opsional: jika tabel admins punya kolom 'type' atau 'jenis_admin')
         ]);
 
-        DB::beginTransaction();
-        try {
-            // Create only the admin user. Do not create a Club record here because
-            // the `clubs` table has a different schema and creating a record
-            // with `user_id/name/jenis_admin` will cause SQL errors.
-            $user = User::create([
-                'name' => $validated['nama_admin'],
-                'email' => $validated['email_resmi'],
-                'password' => Hash::make($validated['password']),
-                'role' => 'admin',
-            ]);
+        // Simpan ke Tabel Admins
+        Admin::create([
+            'name'     => $validated['name'],
+            'email'    => $validated['email'],
+            'password' => Hash::make($validated['password']),
+        ]);
 
-            DB::commit();
-            return redirect()->route('admin_login')->with('success', 'Registrasi admin berhasil. Silakan login.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return back()->withInput()->withErrors(['general' => 'Terjadi kesalahan saat membuat akun. Silakan coba lagi.']);
-        }
+        return redirect()->route('admin.login')
+                         ->with('success', 'Admin registration successful. Please login.');
+    }
+
+    /**
+     * Logout Admin
+     */
+    public function logout(Request $request)
+    {
+        Auth::guard('admin')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('admin.login');
     }
 }

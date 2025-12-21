@@ -1,153 +1,124 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 
-// Controllers
+// --- CONTROLLERS IMPORT ---
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ClubController;
-use App\Http\Controllers\SchunivController;
-use App\Http\Controllers\adminController;
-use App\Http\Controllers\superadminController;
-use App\Http\Controllers\AtletController;
-use App\Http\Controllers\PengajuanController;
+use App\Http\Controllers\InstitutionController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\AthleteController;
+use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\EventController;
-use App\Http\Controllers\KategoriController;
-use App\Http\Controllers\RekorController; // Pastikan buat controller ini untuk Input FP
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\AchievementController;
 
 /*
 |--------------------------------------------------------------------------
-| 1. PUBLIC & AUTHENTICATION ROUTES
+| 1. PUBLIC ROUTES (Halaman Depan & Guest)
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', function () {
-    return redirect()->route('welcome');
-});
+// Halaman Home Utama
+Route::get('/', function () { 
+    return view('home'); 
+})->name('home');
 
-Route::get('/welcome', [LoginController::class, 'welcome_selection'])->name('welcome');
+// Pencarian Publik
+Route::get('/athletes', [AthleteController::class, 'index'])->name('athletes.index');
+Route::get('/achievements', [AchievementController::class, 'index'])->name('achievements.index');
+Route::get('/events-list', [EventController::class, 'index'])->name('events.list'); // Nama route ini dipakai di Navbar
+
+// Halaman pemilihan login (Welcome Card)
+// ALIAS 'login' ditambahkan di sini agar tombol di Navbar tidak error
+Route::get('/welcome', [LoginController::class, 'welcome_selection'])->name('login.selection');
+Route::get('/login', [LoginController::class, 'welcome_selection'])->name('login'); 
+
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// --- AUTH: CLUB ---
-Route::get('/club_login', [ClubController::class, 'club'])->name('club.login');
-Route::post('/club_login_process', [ClubController::class, 'club_login_process'])->middleware('throttle:5,1')->name('club.login.process');
-Route::get('/regis_club', [ClubController::class, 'regis_club'])->name('club.register');
-Route::post('/regis_club', [ClubController::class, 'club_register'])->name('club.register.process');
 
-// --- AUTH: SEKOLAH / UNIV ---
-Route::get('/schuniv/login', [SchunivController::class, 'schuniv'])->name('schuniv.login');
-Route::post('/schuniv/login', [SchunivController::class, 'schuniv_login_process'])->name('schuniv.login.process');
-Route::get('/schuniv/register', [SchunivController::class, 'regis_schuniv'])->name('schuniv.register');
-Route::post('/schuniv/register', [SchunivController::class, 'schuniv_register'])->name('schuniv.register.process');
+/*
+|--------------------------------------------------------------------------
+| 2. AUTHENTICATION ROUTES (GUEST ONLY)
+|--------------------------------------------------------------------------
+*/
+Route::middleware('guest')->group(function() {
+    
+    // --- CLUB AUTH ---
+    Route::prefix('club')->name('club.')->group(function() {
+        Route::get('login', [ClubController::class, 'showLoginForm'])->name('login');
+        Route::post('login', [ClubController::class, 'loginProcess'])->name('login.process');
+        Route::get('register', [ClubController::class, 'showRegisterForm'])->name('register');
+    });
 
-// --- AUTH: ADMIN ---
-Route::get('/admin_login', [adminController::class, 'admin'])->name('admin_login');
-Route::post('/admin_login_process', [adminController::class, 'admin_login_process'])->name('admin.login.process');
-Route::get('/regis_admin', [adminController::class, 'regis_admin'])->name('regis_admin'); // Hati-hati membuka registrasi admin ke publik
-Route::post('/regis_admin', [adminController::class, 'admin_register_process'])->name('admin.register.process');
+    // --- INSTITUTION AUTH ---
+    Route::prefix('institution')->name('institution.')->group(function() {
+        Route::get('login', [InstitutionController::class, 'showLoginForm'])->name('login');
+        Route::post('login', [InstitutionController::class, 'loginProcess'])->name('login.process');
+        Route::get('register', [InstitutionController::class, 'showRegisterForm'])->name('register');
+    });
 
-// --- AUTH: SUPER ADMIN ---
-Route::get('/superadmin_login', [superadminController::class, 'superadmin'])->name('superadmin_login');
-Route::post('/superadmin_login_process', [superadminController::class, 'superadmin_login_process'])->name('superadmin.login.process');
+    // --- ADMIN & SUPER ADMIN AUTH ---
+    Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
+    Route::post('/admin/login', [AdminController::class, 'loginProcess'])->name('admin.login.process');
+    
+    Route::get('/superadmin/login', [SuperAdminController::class, 'showLoginForm'])->name('superadmin.login');
+    Route::post('/superadmin/login', [SuperAdminController::class, 'loginProcess'])->name('superadmin.login.process');
+});
 
 
 /*
 |--------------------------------------------------------------------------
-| 2. GROUP: SUPER ADMIN (Sesuai Sidebar)
+| 3. DASHBOARD ROUTES (AUTH REQUIRED)
+|--------------------------------------------------------------------------
+| Menyesuaikan dengan logic Navbar: route('dashboard')
+*/
+Route::middleware(['auth:web'])->group(function() {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| 4. SUPER ADMIN ROUTES
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth:superadmin'])->group(function () {
+Route::middleware(['auth:super_admin'])->prefix('super-admin')->name('super.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'superAdmin'])->name('dashboard');
+    Route::get('/users', [SuperAdminController::class, 'manageUsers'])->name('users.index');
     
-    // Dashboard Utama
-    Route::get('/super/dashboard', [DashboardController::class, 'index'])->name('super.dashboard');
-
-    // Master Data User
-    Route::get('/super/users', [superadminController::class, 'manage_users'])->name('super.users.index');
-
-    // Pusat Validasi (Approval)
-    Route::prefix('super/approval')->name('super.approval.')->group(function() {
-        // Halaman List Pengajuan Edit
-        Route::get('/edit', [PengajuanController::class, 'listEdit'])->name('edit');
-        // Halaman List Pengajuan Hapus
-        Route::get('/hapus', [PengajuanController::class, 'listHapus'])->name('hapus');
-        
-        // Action Approve/Reject
-        Route::post('/{id}/approve', [PengajuanController::class, 'approve'])->name('action.approve');
-        Route::post('/{id}/reject', [PengajuanController::class, 'reject'])->name('action.reject');
+    // Approval Center
+    Route::prefix('approvals')->name('approval.')->group(function() {
+        Route::get('/', [SubmissionController::class, 'index'])->name('index');
+        Route::post('/{id}/approve', [SubmissionController::class, 'approve'])->name('approve');
     });
 });
 
 
 /*
 |--------------------------------------------------------------------------
-| 3. GROUP: ADMIN (Operator Lomba)
+| 5. ADMIN ROUTES (Operator Lomba)
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth:admin'])->group(function () {
-    
-    // Dashboard Admin
-    Route::get('/admin/dashboard', [DashboardController::class, 'admin'])->name('admin.dashboard');
-
-    // Manajemen Event (List Kompetisi)
-    Route::get('/admin/events', [EventController::class, 'indexAdmin'])->name('admin.event.list');
-
-    // Pencatatan Rekor (Input FP)
-    // Anda perlu membuat method 'inputFp' di RekorController/EventController
-    Route::get('/admin/input-fp', [EventController::class, 'inputFp'])->name('admin.input.fp');
-    Route::post('/admin/input-fp', [EventController::class, 'storeFp'])->name('admin.store.fp');
-
-    // Verifikasi Rekor
-    Route::get('/admin/verifikasi-rekor', [EventController::class, 'verifikasi'])->name('admin.rekor.verifikasi');
+Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'admin'])->name('dashboard');
+    Route::resource('events', EventController::class);
+    Route::get('/achievements/input', [AchievementController::class, 'inputForm'])->name('achievement.input');
 });
 
 
 /*
 |--------------------------------------------------------------------------
-| 4. GROUP: USER (KLUB & SEKOLAH)
+| 6. CLUB ROUTES
 |--------------------------------------------------------------------------
-| Karena Sidebar Klub dan Sekolah SAMA, kita samakan struktur routenya.
-| Menggunakan middleware group terpisah karena guard auth-nya beda.
 */
-
-// --- Routes untuk KLUB ---
-Route::middleware(['auth:club'])->group(function () {
-    
-    Route::get('/dashboard_klub', [DashboardController::class, 'dashboard_klub'])->name('dashboard_klub');
-    Route::get('/profil_klub', [DashboardController::class, 'profil'])->name('profil.index');
-
-    // CRUD Atlet
-    Route::resource('atlet', AtletController::class);
-
-    // Request Edit/Hapus
-    Route::post('/atlet/{id}/request-update', [PengajuanController::class, 'pengajuanEdit'])->name('atlet.request_update');
-    Route::post('/atlet/{id}/request-delete', [PengajuanController::class, 'pengajuanHapus'])->name('atlet.request_delete');
-
-    // Status Pengajuan
-    Route::get('/status-pengajuan', [PengajuanController::class, 'statusSaya'])->name('pengajuan.status');
-
-    // Manajemen Event
-    Route::resource('event', EventController::class)->only(['index', 'show']);
-
-    // --- TAMBAHKAN BARIS INI (SOLUSI) ---
-    // Menggunakan only(['index']) karena Klub biasanya hanya melihat daftar kategori, tidak mengeditnya.
-    Route::resource('kategori', KategoriController::class)->only(['index']); 
+Route::middleware(['auth:club'])->prefix('club')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'club'])->name('club.dashboard');
+    Route::resource('athlete', AthleteController::class);
 });
 
-// --- Routes untuk SEKOLAH / UNIV ---
-Route::middleware(['auth:sekouniv'])->group(function () {
-    
-    // Note: Nama route disamakan polanya atau diarahkan ke controller yang sama jika logic-nya mirip
-    // Jika Sidebar Sekolah ingin menggunakan route('dashboard_klub'), Anda harus memberi nama route yg sama 
-    // TAPI karena nama route harus unik, lebih baik di sidebar menggunakan logika if(role=='sekolah') route('dashboard_sekolah')
-    
-    Route::get('/schuniv/dashboard', function () {
-        return view('dashboard_schuniv');
-    })->name('dashboard_schuniv'); // Nanti sesuaikan di sidebar
-
-    // Gunakan controller yang sama atau buat khusus Sekolah
-    Route::resource('atlet-sekolah', AtletController::class); 
-    
-    // Status Pengajuan
-    Route::get('/schuniv/status-pengajuan', [PengajuanController::class, 'statusSaya'])->name('schuniv.pengajuan.status');
-});
+// Placeholders
+Route::view('/statistics', 'statistics.index')->name('statistics');
+Route::view('/gallery', 'gallery.index')->name('gallery');

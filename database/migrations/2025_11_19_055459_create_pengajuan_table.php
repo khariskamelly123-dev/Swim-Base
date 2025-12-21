@@ -4,28 +4,40 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePengajuanTable extends Migration
+return new class extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('pengajuans', function (Blueprint $table) {
+        Schema::create('submissions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('atlet_id')->nullable();
-            $table->unsignedBigInteger('klub_id')->nullable(); // siapa pengaju
-            $table->enum('tipe_pengajuan', ['edit','hapus']);
-            $table->json('data_baru')->nullable(); // hanya untuk edit
-            $table->text('alasan')->nullable();
-            $table->enum('status', ['pending','approved','rejected'])->default('pending');
-            $table->unsignedBigInteger('approved_by')->nullable();
-            $table->text('catatan')->nullable();
+            
+            // Relasi ke tabel athletes (bisa null jika ini pengajuan atlet baru yang belum punya ID)
+            $table->foreignId('athlete_id')->nullable()->constrained('athletes')->onDelete('cascade');
+            
+            // Relasi ke tabel clubs
+            $table->foreignId('club_id')->constrained('clubs')->onDelete('cascade');
+            
+            $table->string('submission_type'); // Contoh: 'create', 'update', 'transfer'
+            
+            // Kolom JSON untuk menyimpan data perubahan
+            $table->json('new_data')->nullable(); 
+            
+            $table->text('reason')->nullable();
+            
+            // Status default biasanya 'pending' (menunggu)
+            $table->string('status')->default('pending'); 
+            
+            // Relasi ke user (admin) yang melakukan approve
+            $table->foreignId('approved_by')->nullable()->constrained('users');
+            
+            $table->text('notes')->nullable(); // Catatan penolakan/persetujuan
+            
             $table->timestamps();
-
-            $table->foreign('atlet_id')->references('id')->on('atlets')->onDelete('SET NULL');
         });
     }
 
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists('pengajuans');
+        Schema::dropIfExists('submissions');
     }
-}
+};

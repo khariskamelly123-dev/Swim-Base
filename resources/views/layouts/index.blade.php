@@ -26,7 +26,7 @@
         <tr>
             <td>{{ $i+1 }}</td>
             <td>{{ $a->nama }}</td>
-            <td>{{ $a->tanggal_lahir }}</td>
+            <td>{{ $a->birth_date }}</td>
             <td>{{ $a->kategori_renang }}</td>
             <td>
                 @if($role == 'klub')
@@ -49,7 +49,7 @@
                 <tr>
                     <td>{{ $i + 1 }}</td>
                     <td>{{ $a->nama }}</td>
-                    <td>{{ $a->tanggal_lahir }}</td>
+                    <td>{{ $a->birth_date }}</td>
                     <td>{{ $a->kategori_renang }}</td>
                     <td>
                         @if($role == 'klub')

@@ -2,33 +2,62 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class superadminController extends Controller
+class SuperAdminController extends Controller
 {
-    public function superadmin()
+    /**
+     * Tampilkan Halaman Login Super Admin
+     * Route: superadmin.login
+     */
+    public function showLoginForm()
     {
-        return view('auth.superadmin.superadmin_login');
+        // Pastikan view sudah direname jadi 'login.blade.php' 
+        // di dalam folder resources/views/auth/superadmin/
+        return view('auth.superadmin.login');
     }
 
-    public function superadmin_login_process(Request $request)
+    /**
+     * Proses Login
+     * Route: superadmin.login.process
+     */
+    public function loginProcess(Request $request)
     {
-        $validated = $request->validate([
-            'email' => 'required|email',
+        // 1. Validasi Input
+        $credentials = $request->validate([
+            'email'    => 'required|email',
             'password' => 'required|string',
         ]);
 
-        if (!Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']])) {
-            return back()->withErrors(['email' => 'Email atau password salah.'])->onlyInput('email');
+        // 2. Coba Login pakai Guard 'superadmin'
+        // Ini akan mengecek kredensial ke tabel 'super_admins'
+        if (Auth::guard('super_admin')->attempt($credentials)) {
+            
+            $request->session()->regenerate();
+
+            // Redirect ke Dashboard Super Admin
+            return redirect()->route('super.dashboard')
+                             ->with('success', 'Welcome, Super Admin!');
         }
 
-        $user = Auth::user();
-        if (!isset($user->role) || $user->role !== 'superadmin') {
-            Auth::logout();
-            return back()->withErrors(['email' => 'Akses superadmin ditolak.']);
-        }
+        // 3. Gagal Login
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
+    }
 
-        return redirect()->route('dashboard')->with('success', 'Superadmin login successful');
+    /**
+     * Logout Super Admin
+     */
+    public function logout(Request $request)
+    {
+        Auth::guard('super_admin')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('superadmin.login');
     }
 }

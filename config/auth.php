@@ -35,59 +35,67 @@ return [
     |
     */
 
-    'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
-        'club' => [
-            'driver' => 'session',
-            'provider' => 'clubs',
-        ],
-        'sekouniv' => [
-            'driver' => 'session',
-            'provider' => 'sekouniv',
-        ],
+   // config/auth.php
+
+'guards' => [
+    'web' => [
+        'driver' => 'session',
+        'provider' => 'users',
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | User Providers
-    |--------------------------------------------------------------------------
-    |
-    | All authentication guards have a user provider, which defines how the
-    | users are actually retrieved out of your database or other storage
-    | system used by the application. Typically, Eloquent is utilized.
-    |
-    | If you have multiple user tables or models you may configure multiple
-    | providers to represent the model / table. These providers may then
-    | be assigned to any extra authentication guards you have defined.
-    |
-    | Supported: "database", "eloquent"
-    |
-    */
+    // Pastikan nama ini 'super_admin' (pakai underscore)
+    'super_admin' => [
+        'driver' => 'session',
+        'provider' => 'super_admins',
+    ],
 
-    'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
-        ],
+    'admin' => [
+        'driver' => 'session',
+        'provider' => 'admins',
+    ],
 
-        'clubs' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Club::class,
-        ],
+    'club' => [
+        'driver' => 'session',
+        'provider' => 'clubs',
+    ],
 
-        'sekouniv' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\sekouniv::class,
-        ],
+    'institution' => [
+        'driver' => 'session',
+        'provider' => 'institutions',
+    ],
+],
+
+'providers' => [
+    'users' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\User::class,
+    ],
+
+    'super_admins' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\SuperAdmin::class,
+    ],
+
+    'admins' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Admin::class,
+    ],
+
+    'clubs' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Club::class,
+    ],
+
+    'institutions' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Institution::class,
+    ],
+],
 
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
-    ],
 
     /*
     |--------------------------------------------------------------------------
