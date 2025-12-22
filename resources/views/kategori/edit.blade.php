@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'Create Klub - Swim Base')
+@section('title', 'Kategori - Swim Base')
 
 @section('content')
 
@@ -9,10 +9,11 @@
 
         {{-- Header --}}
         @include('layouts.header', [
-        'title' => 'Create Klub',
+        'title' => 'Edit Kategori'
     ])
 
         <style>
+
             .content-wrapper {
                 padding: 30px;
                 background-color: #f4f6f8;
@@ -94,24 +95,34 @@
 
         <div class="content-wrapper">
             <div class="card">
-                <h2>Create Hasil dan Rekor</h2>
-
+                <h2>Edit Kategori</h2>
+                <!-- No, Kode, Nama Kategori, Batas Umur, Gender -->
                 <form action="#" method="POST">
                     @csrf
                     @method('PUT')
 
                     <div class="form-group">
-                        <label for="nama_klub">Nama Klub</label>
-                        <input type="text" id="nama_klub" name="nama_klub">
+                        <label for="kode">Kode</label>
+                        <input type="text" id="kode" name="kode" value="{{ $kategori->kode }}" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="kota">Kota</label>
-                        <input type="text" id="kota" name="kota" >
-                    </div> 
+                        <label for="nama_kategori">Nama Kategori</label>
+                        <input type="text" id="nama_kategori" name="nama_kategori" value="{{ $kategori->nama_kategori }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="batas_umur">Batas Umur</label>
+                        <input type="text" id="batas_umur" name="batas_umur" value="{{ $kategori->batas_umur }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <input type="text" id="gender" name="gender" value="{{ $kategori->gender }}" required>
+                    </div>
 
                     <div class="btn-wrapper">
-                        <button type="submit" class="btn-save">Buat</button>
+                        <button type="submit" class="btn-save">simpan</button>
                     </div>
                 </form>
             </div>

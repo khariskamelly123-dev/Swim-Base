@@ -10,7 +10,7 @@ class SuperAdminSeeder extends Seeder
 {
     public function run(): void
     {
-        SuperAdmin::create([
+        SuperAdmin::updateOrCreate([
             'name'     => 'Master Admin',
             'email'    => 'super@admin.com',
             'password' => Hash::make('password123'), // Ganti password yang aman

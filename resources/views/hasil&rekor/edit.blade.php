@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'Create Klub - Swim Base')
+@section('title', 'Edit hasil dan rekor - Swim Base')
 
 @section('content')
 
@@ -9,11 +9,14 @@
 
         {{-- Header --}}
         @include('layouts.header', [
-        'title' => 'Create Klub',
+        'title' => 'Edit hasil dan rekor'
     ])
 
         <style>
+            /* ===== WRAPPER ===== 
+            *   /
             .content-wrapper {
+                margin-left: 250px; /* sesuaikan dengan lebar sidebar */
                 padding: 30px;
                 background-color: #f4f6f8;
                 min-height: 100vh;
@@ -94,24 +97,39 @@
 
         <div class="content-wrapper">
             <div class="card">
-                <h2>Create Hasil dan Rekor</h2>
-
+                <h2>Edit Hasil dan Rekor</h2>
+                <!-- No, Nama Atlet, Event, Nomor Lomba, Waktu, Tanggal -->
                 <form action="#" method="POST">
                     @csrf
                     @method('PUT')
 
                     <div class="form-group">
-                        <label for="nama_klub">Nama Klub</label>
-                        <input type="text" id="nama_klub" name="nama_klub">
+                        <label for="nama_atlet">Nama Atlet</label>
+                        <input type="text" id="nama_atlet" name="nama_atlet" value="{{ $hasilRekor->nama_atlet }}" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="kota">Kota</label>
-                        <input type="text" id="kota" name="kota" >
-                    </div> 
+                        <label for="event">Event</label>
+                        <input type="text" id="event" name="event" value="{{ $hasilRekor->event }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nomor_lomba">Nomor Lomba</label>
+                        <input type="text" id="nomor_lomba" name="nomor_lomba" value="{{ $hasilRekor->nomor_lomba }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="waktu">Waktu</label>
+                        <input type="text" id="waktu" name="waktu" value="{{ $hasilRekor->waktu }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tanggal">Tanggal</label>
+                        <input type="date" id="tanggal" name="tanggal" value="{{ $hasilRekor->tanggal }}" required>
+                    </div>
 
                     <div class="btn-wrapper">
-                        <button type="submit" class="btn-save">Buat</button>
+                        <button type="submit" class="btn-save">simpan</button>
                     </div>
                 </form>
             </div>
