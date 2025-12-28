@@ -21,6 +21,7 @@ class Athlete extends Model
         'gender',
         'place_of_birth',
         'club_id',
+        'institution_id', // <--- TAMBAHKAN INI
     ];
 
     public function club()

@@ -85,15 +85,23 @@ Route::middleware(['auth:web'])->group(function() {
 | 4. SUPER ADMIN ROUTES
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth:super_admin'])->prefix('super-admin')->name('super.')->group(function () {
+Route::middleware(['auth:super_admin'])->prefix('superadmin')->name('super.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'superAdmin'])->name('dashboard');
     Route::get('/users', [SuperAdminController::class, 'manageUsers'])->name('users.index');
+    Route::resource('institutions', InstitutionController::class);
+    Route::resource('admins', AdminController::class);
+    Route::resource('clubs', ClubController::class);
+    Route::resource('category', App\Http\Controllers\CategoryController::class);
+    Route::resource('athletes', App\Http\Controllers\AthleteController::class);
     
     // Approval Center
     Route::prefix('approvals')->name('approval.')->group(function() {
         Route::get('/', [SubmissionController::class, 'index'])->name('index');
         Route::post('/{id}/approve', [SubmissionController::class, 'approve'])->name('approve');
+        Route::get('/super-admin/users', [App\Http\Controllers\SuperAdminController::class, 'users'])->name('super.users.index');
+        Route::get('/super-admin/approval', [App\Http\Controllers\SuperAdminController::class, 'approval'])->name('super.approval.index');
     });
+
 });
 
 
@@ -104,8 +112,29 @@ Route::middleware(['auth:super_admin'])->prefix('super-admin')->name('super.')->
 */
 Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'admin'])->name('dashboard');
+    Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
+    
+    // PERBAIKAN DI SINI: Hilangkan kata 'admin.' di dalam ->name()
+    // Karena sudah dibungkus group name('admin.')
+    Route::get('/results', [EventController::class, 'manageResults'])->name('results.index'); 
+    
     Route::resource('events', EventController::class);
-    Route::get('/achievements/input', [AchievementController::class, 'inputForm'])->name('achievement.input');
+    Route::resource('athletes', AthleteController::class);
+    Route::resource('submissions', SubmissionController::class);
+    Route::resource('achievements', AchievementController::class);
+    
+    // Perbaikan Resource Category
+    Route::resource('category', CategoryController::class)
+        ->only(['index'])
+        ->names('category'); // Hasilnya: admin.category.index
+
+    Route::get('/athletes/search', [AthleteController::class, 'search'])->name('athletes.search');
+    Route::get('/events/{id}/results', [EventController::class, 'results'])->name('events.results');
+    Route::post('/events/{id}/results/submit', [EventController::class, 'submitResults'])->name('events.results.submit');
+    
+    // Perbaikan Achievement Routes
+    Route::get('/achievement-input', [AchievementController::class, 'inputForm'])->name('achievement.input');
+    Route::post('/achievement-submit', [AchievementController::class, 'submitInput'])->name('achievement.submit_input');
 });
 
 
@@ -116,7 +145,30 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 */
 Route::middleware(['auth:club'])->prefix('club')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'club'])->name('club.dashboard');
+    Route::get('/profile', [ClubController::class, 'profile'])->name('club.profile');
+    Route::resource('category', CategoryController::class)
+        ->only(['index'])
+        ->names('club.category');
+    Route::resource('submissions', SubmissionController::class);
+    Route::resource('achievements', AchievementController::class);
+    Route::resource('event', EventController::class)->only(['index', 'show']);
     Route::resource('athlete', AthleteController::class);
+    Route::post('/athlete/{id}/submit-update', [AthleteController::class, 'submitUpdate'])->name('athlete.submit_update');
+    Route::post('/athlete/{id}/submit-delete', [AthleteController::class, 'submitDelete'])->name('athlete.submit_delete');
+});
+
+Route::middleware(['auth:institution'])->prefix('institution')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'institution'])->name('institution.dashboard');
+    Route::get('/profile', [InstitutionController::class, 'profile'])->name('institution.profile');
+    Route::resource('category', CategoryController::class)
+        ->only(['index'])
+        ->names('institution.category');
+    Route::resource('submissions', SubmissionController::class);
+    Route::resource('achievements', AchievementController::class);
+    Route::resource('event', EventController::class)->only(['index', 'show']);
+    Route::resource('athlete', AthleteController::class);
+    Route::post('/athlete/{id}/submit-update', [AthleteController::class, 'submitUpdate'])->name('athlete.submit_update');
+    Route::post('/athlete/{id}/submit-delete', [AthleteController::class, 'submitDelete'])->name('athlete.submit_delete');
 });
 
 // Placeholders

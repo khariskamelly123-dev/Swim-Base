@@ -3,7 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Illuminate\Http\Request; // <--- JANGAN LUPA IMPORT INI
+use Illuminate\Http\Request; 
 use App\Http\Middleware\CheckRole; 
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -14,27 +14,39 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         
-        // 1. Alias Middleware Custom Kamu
+        // 1. Alias Middleware Custom
         $middleware->alias([
             'role' => CheckRole::class,
         ]);
 
-        // 2. LOGIKA REDIRECT (Ini Solusi Error Route Not Defined)
-        // Kode ini memberi tahu Laravel: "Kalau belum login, lempar ke sini..."
+        // 2. LOGIKA REDIRECT DINAMIS (Penting untuk Multi-Auth)
+        // Jika user belum login mencoba akses halaman tertentu, Laravel akan melempar ke pintu yang tepat
         $middleware->redirectGuestsTo(function (Request $request) {
             
-            // Jika user mencoba akses halaman klub atau atlet
-            if ($request->is('club/*') || $request->is('atlet*')) {
+            // Jika akses dashboard super admin
+            if ($request->is('super-admin/*')) {
+                return route('super.login');
+            }
+
+            // Jika akses dashboard admin
+            if ($request->is('admin/*')) {
+                return route('admin.login');
+            }
+
+            // Jika akses portal klub atau data atlet privat
+            if ($request->is('club/*')) {
                 return route('club.login');
             }
             
-            // Jika user mencoba akses halaman sekolah
-            if ($request->is('schuniv/*')) {
-                return route('schuniv.login');
+            // Jika akses portal institusi (Sekolah/Univ)
+            // UPDATED: Dari schuniv ke institution
+            if ($request->is('institution/*')) {
+                return route('institution.login');
             }
             
-            // Default (jika bukan keduanya) lempar ke halaman welcome
-            return route('welcome');
+            // Default: Dilempar ke halaman pilihan login utama
+            // UPDATED: Menggunakan route login yang baru kita buat
+            return route('login'); 
         });
 
     })

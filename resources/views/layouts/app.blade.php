@@ -8,10 +8,10 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container">
-    <a class="navbar-brand" href="{{ route('atlet.index') }}">SwimBase</a>
+    <a class="navbar-brand" href="{{ route('athlete.index') }}">SwimBase</a>
     <div>
-      <a class="btn btn-outline-primary btn-sm" href="{{ route('atlet.index') }}">Data Atlet</a>
-      <a class="btn btn-outline-secondary btn-sm" href="{{ route('pengajuan.index') }}">Pengajuan</a>
+      <a class="btn btn-outline-primary btn-sm" href="{{ route('athlete.index') }}">Data Atlet</a>
+      <a class="btn btn-outline-secondary btn-sm" href="{{ route('submission.index') }}">Pengajuan</a>
       <form action="{{ route('logout') }}" method="POST" class="d-inline">
     @csrf
     <button type="submit" class="dropdown-item">

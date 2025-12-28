@@ -13,7 +13,7 @@ class DashboardController extends Controller
     // Dashboard untuk Super Admin
     public function superAdmin()
     {
-        return view('dashboard.super_admin', [
+        return view('dashboard.superadmin', [
             'total_athletes' => Athlete::count(),
             'total_clubs' => Club::count(),
             'total_events' => Event::count(),
@@ -48,7 +48,7 @@ class DashboardController extends Controller
 
         return view('dashboard.institution', [
             'institution' => $institution,
-            'my_athletes' => Athlete::where('institution_id', $institution->id)->count(),
+            'my_athletes' => 0,
         ]);
     }
 }

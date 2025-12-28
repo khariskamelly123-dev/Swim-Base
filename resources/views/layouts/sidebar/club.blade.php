@@ -1,7 +1,7 @@
 @php
-    // CLUB YANG LOGIN
-    $club = auth()->user();
-    $displayName = $club?->nama_klub ?? 'Club';
+    // CLUB YANG LOGIN - Gunakan guard spesifik agar data akurat
+    $club = auth()->guard('club')->user();
+    $displayName = $club?->name ?? 'Club'; // Sesuaikan dengan kolom 'name' di database
 @endphp
 
 <aside class="w-72 bg-white border-r border-gray-100 flex-shrink-0 flex flex-col transition-all duration-300 shadow-[4px_0_24px_rgba(0,0,0,0.02)] z-20">
@@ -11,14 +11,14 @@
         <div class="p-4 bg-gradient-to-r from-gray-50 to-white border border-gray-100 rounded-2xl flex items-center gap-4 shadow-sm">
             <div class="relative">
                 <img 
-                    src="https://ui-avatars.com/api/?name={{ urlencode($displayName) }}&background=FEE2E2&color=DC2626&bold=true"
+                    src="https://ui-avatars.com/api/?name={{ urlencode($displayName) }}&background=D92323&color=fff&bold=true"
                     alt="Club"
                     class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-md"
                 >
                 <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
             </div>
             <div>
-                <h3 class="font-bold text-gray-800 text-sm">
+                <h3 class="font-bold text-gray-800 text-sm truncate w-32">
                     {{ $displayName }}
                 </h3>
                 <p class="text-xs text-gray-500">
@@ -36,25 +36,24 @@
         </p>
 
         {{-- DASHBOARD --}}
-        <a href="{{ route('dashboard.club') }}"
+        <a href="{{ route('club.dashboard') }}"
            class="flex items-center px-4 py-3 text-sm rounded-xl group transition-all 
-           {{ request()->routeIs('dashboard_club') 
+           {{ request()->routeIs('club.dashboard') 
                 ? 'bg-red-50 text-red-700 font-semibold shadow-sm ring-1 ring-red-100' 
                 : 'font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
             <i class="fas fa-th-large w-6 text-center 
-            {{ request()->routeIs('dashboard_club') ? 'text-red-600' : 'text-gray-400 group-hover:text-red-500' }}"></i>
+            {{ request()->routeIs('club.dashboard') ? 'text-red-600' : 'text-gray-400 group-hover:text-red-500' }}"></i>
             Dashboard
         </a>
 
         {{-- PROFIL KLUB --}}
-        {{-- Pastikan nama route di web.php adalah 'profil.index' --}}
-        <a href="{{ route('profil.index') }}"
+        <a href="{{ route('club.profile') }}" 
            class="flex items-center px-4 py-3 text-sm rounded-xl group transition-all 
-           {{ request()->routeIs('profil.index') 
+           {{ request()->routeIs('club.profile') 
                 ? 'bg-red-50 text-red-700 font-semibold shadow-sm ring-1 ring-red-100' 
                 : 'font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
             <i class="fas fa-user-circle w-6 text-center 
-            {{ request()->routeIs('profil.index') ? 'text-red-600' : 'text-gray-400 group-hover:text-red-500' }}"></i>
+            {{ request()->routeIs('club.profile') ? 'text-red-600' : 'text-gray-400 group-hover:text-red-500' }}"></i>
             Profil Klub
         </a>
 
@@ -63,26 +62,26 @@
         </p>
 
         {{-- DATA ATLET --}}
-        <a href="{{ route('atlet.index') }}"
+        {{-- Menggunakan athlete.index (singular) sesuai Resource di web.php --}}
+        <a href="{{ route('athlete.index') }}"
            class="flex items-center px-4 py-3 text-sm rounded-xl group transition-all 
-           {{ request()->routeIs('atlet*') 
+           {{ request()->routeIs('athlete.*') 
                 ? 'bg-red-50 text-red-700 font-semibold shadow-sm ring-1 ring-red-100' 
                 : 'font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
             <i class="fas fa-swimmer w-6 text-center 
-            {{ request()->routeIs('atlet*') ? 'text-red-600' : 'text-gray-400 group-hover:text-red-500' }}"></i>
+            {{ request()->routeIs('athlete.*') ? 'text-red-600' : 'text-gray-400 group-hover:text-red-500' }}"></i>
             Data Atlet
         </a>
 
         {{-- KATEGORI RENANG --}}
-        {{-- Ganti 'kategori.index' dengan nama route aslimu --}}
-        <a href="{{ route('kategori.index') ?? '#' }}"
+        <a href="{{ route('club.category.index') }}" 
            class="flex items-center px-4 py-3 text-sm rounded-xl group transition-all 
-           {{ request()->routeIs('kategori.*') 
+           {{ request()->routeIs('club.category.*') 
                 ? 'bg-red-50 text-red-700 font-semibold shadow-sm ring-1 ring-red-100' 
                 : 'font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-            <i class="fas fa-layer-group w-6 text-center 
-            {{ request()->routeIs('kategori.*') ? 'text-red-600' : 'text-gray-400 group-hover:text-red-500' }}"></i>
-            Kategori Renang
+            <i class="fas fa-tags w-6 text-center 
+            {{ request()->routeIs('club.category.*') ? 'text-red-600' : 'text-gray-400 group-hover:text-red-500' }}"></i>
+            Daftar Kategori
         </a>
 
         <p class="px-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest mt-6 mb-2">
@@ -90,15 +89,15 @@
         </p>
 
         {{-- MANAJEMEN EVENT --}}
-        {{-- Ganti 'event.index' dengan nama route aslimu --}}
-        <a href="{{ route('event.index') ?? '#' }}"
+        {{-- UPDATED: Menggunakan 'event.index' (Read Only untuk Club) --}}
+        <a href="{{ route('event.index') }}"
            class="flex items-center px-4 py-3 text-sm rounded-xl group transition-all 
            {{ request()->routeIs('event.*') 
                 ? 'bg-red-50 text-red-700 font-semibold shadow-sm ring-1 ring-red-100' 
                 : 'font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
             <i class="fas fa-calendar-alt w-6 text-center 
             {{ request()->routeIs('event.*') ? 'text-red-600' : 'text-gray-400 group-hover:text-red-500' }}"></i>
-            Manajemen Event
+            Daftar Event
         </a>
 
         {{-- LOGOUT --}}

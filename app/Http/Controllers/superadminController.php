@@ -32,7 +32,7 @@ class SuperAdminController extends Controller
         ]);
 
         // 2. Coba Login pakai Guard 'superadmin'
-        // Ini akan mengecek kredensial ke tabel 'super_admins'
+        // Ini akan mengecek kredensial ke tabel 'superadmins'
         if (Auth::guard('super_admin')->attempt($credentials)) {
             
             $request->session()->regenerate();
@@ -53,7 +53,7 @@ class SuperAdminController extends Controller
      */
     public function logout(Request $request)
     {
-        Auth::guard('super_admin')->logout();
+        Auth::guard('superadmin')->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

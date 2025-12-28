@@ -117,10 +117,24 @@
             @endphp
 
             @if($isLoggedIn)
-                {{-- TAMPILAN DASHBOARD (JIKA LOGIN) --}}
-                <a href="{{ route('dashboard') }}" class="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-2 rounded-full font-semibold transition-all flex items-center gap-2">
-                    <i class="fas fa-user-circle"></i> Dashboard
-                </a>
+                {{-- TOMBOL DASHBOARD DINAMIS --}}
+@php
+    // Menentukan link tujuan berdasarkan guard yang sedang aktif
+    $dashboardLink = '#';
+    if(auth()->guard('super_admin')->check()) {
+        $dashboardLink = route('super.dashboard');
+    } elseif(auth()->guard('admin')->check()) {
+        $dashboardLink = route('admin.dashboard');
+    } elseif(auth()->guard('club')->check()) {
+        $dashboardLink = route('club.dashboard');
+    } elseif(auth()->guard('institution')->check()) {
+        $dashboardLink = route('institution.dashboard');
+    }
+@endphp
+
+<a href="{{ $dashboardLink }}" class="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-2 rounded-full font-semibold transition-all flex items-center gap-2">
+    <i class="fas fa-user-circle"></i> Dashboard
+</a>
             @else
                 {{-- TAMPILAN MASUK (JIKA GUEST) --}}
                 <div class="dropdown-container">

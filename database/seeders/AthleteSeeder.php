@@ -18,148 +18,158 @@ class AthleteSeeder extends Seeder
 {
     public function run(): void
     {
-        $csvFile = database_path('seeders/csv/meet_rank.csv');
+        $files = [
+            'diy' => database_path('seeders/csv/meet_rank_diy.csv'),
+            'nasional' => database_path('seeders/csv/meet_rank_nasional.csv'),
+        ];
 
-        if (file_exists($csvFile)) {
-            $this->importFromCsv($csvFile);
-        } else {
-            $this->command->warn("File CSV tidak ditemukan.");
+        foreach ($files as $type => $path) {
+            if (file_exists($path)) {
+                $this->command->info("Memproses fail: $type...");
+                $this->importFromCsv($path, $type);
+            } else {
+                $this->command->warn("Fail $type tidak dijumpai di: $path");
+            }
         }
     }
 
-    private function importFromCsv($path)
+    private function importFromCsv($path, $type)
     {
-        $this->command->info("Memulai import data atlet...");
-        
-        // --- LANGKAH 1: AUTO-FIX DEPENDENSI ---
-        
-        // 1. Buat Kategori 'Swimming'
         $category = Category::firstOrCreate(
-            ['name' => 'Renang Lintasan'], 
-            [
-                'slug'        => 'renang-lintasan',
-                'description' => 'Kategori Renang Kompetisi Standar'
-            ]
+            ['slug' => 'renang-lintasan'], 
+            ['name' => 'Renang Lintasan', 'description' => 'Kategori Renang Kompetisi Standar']
         );
 
-        // 2. Buat Admin Default (PERBAIKAN: Hapus 'phone')
         $admin = Admin::firstOrCreate(
             ['email' => 'admin@swimbase.com'],
-            [
-                'name'     => 'Admin Operator',
-                'password' => Hash::make('password'),
-                // 'phone'    => '08123456789' // Baris ini dihapus karena kolom phone tidak ada di tabel admins
-            ]
+            ['name' => 'Admin Operator', 'password' => Hash::make('password')]
         );
 
         $handle = fopen($path, "r");
-        $delimiter = ","; 
-
-        // Skip header row
-        fgetcsv($handle, 2000, $delimiter); 
-
         $count = 0;
-        
+
+        if ($type == 'diy') {
+            for ($i = 0; $i < 6; $i++) fgetcsv($handle, 2000, ","); 
+        } else {
+            fgetcsv($handle, 2000, ","); 
+        }
+
         DB::beginTransaction();
         try {
-            while (($row = fgetcsv($handle, 2000, $delimiter)) !== FALSE) {
+            while (($row = fgetcsv($handle, 2000, ",")) !== FALSE) {
                 
-                // Validasi Header/Sampah
-                if (!isset($row[0]) || !is_numeric($row[0])) {
-                    continue;
+                // 1. MAPPING DATA
+                if ($type == 'diy') {
+                    $rank      = $row[1] ?? null;
+                    $customId  = $row[2] ?? null; 
+                    $name      = $row[3] ?? null;
+                    $dobRaw    = $row[5] ?? null;
+                    $clubName  = $row[6] ?? 'Tanpa Kelab';
+                    $city      = $row[7] ?? 'Unknown';
+                    $province  = $row[8] ?? 'DI Yogyakarta';
+                    $eventName = $row[9] ?? 'Unknown Event';
+                    $result    = $row[10] ?? null;
+                    $fp        = $row[11] ?? 0;
+                } else {
+                    $rank      = $row[0] ?? null;
+                    $customId  = $row[1] ?? null; 
+                    $name      = $row[2] ?? null;
+                    $dobRaw    = $row[3] ?? null;
+                    $clubName  = $row[4] ?? 'Unknown';
+                    $city      = 'Unknown'; // Default untuk nasional
+                    $province  = $row[4] ?? 'Indonesia';
+                    $eventName = $row[5] ?? 'Database Nasional 2024';
+                    $result    = $row[6] ?? null;
+                    $fp        = preg_replace('/[^0-9]/', '', $row[7] ?? 0);
                 }
 
-                // --- MAPPING (SESUAI CSV ANDA) ---
-                $rank      = $row[0] ?? null; 
-                $customId  = $row[1] ?? null;
-                $name      = $row[2] ?? null;
-                // $row[3] kosong
-                $dobRaw    = $row[4] ?? null;
-                $clubName  = $row[5] ?? null;
-                $city      = $row[6] ?? null;
-                $province  = $row[7] ?? 'DI Yogyakarta';
-                $eventName = $row[8] ?? 'UNKNOWN EVENT';
-                $result    = $row[9] ?? null;
-                $fp        = $row[10] ?? 0;
+                // 2. VALIDASI DASAR
+                if (empty($name) || !is_numeric($rank)) continue;
 
-                if (empty($name)) continue;
-
-                // Format Tanggal
+                // 3. PARSING TANGGAL
                 try {
-                    $birthDate = Carbon::parse($dobRaw)->format('Y-m-d');
+                    $birthDate = $dobRaw ? Carbon::parse($dobRaw)->format('Y-m-d') : null;
                 } catch (\Exception $e) {
-                    $birthDate = null; 
+                    $birthDate = null;
                 }
 
-                // --- BUAT EVENT ---
-                $eventSlug = Str::slug($eventName);
+                // 4. BUAT EVENT
                 $event = Event::firstOrCreate(
-                    ['slug' => $eventSlug],
+                    ['slug' => Str::slug($eventName)],
                     [
-                        'name'         => $eventName,
-                        'location'     => 'Yogyakarta',
-                        'start_date'   => now(),
-                        'end_date'     => now(),
-                        'category_id'  => $category->id, 
-                        'organizer_id' => $admin->id,    
-                        'status'       => 'completed'
+                        'name' => $eventName,
+                        'location' => $city,
+                        'category_id' => $category->id,
+                        'organizer_id' => $admin->id,
+                        'status' => 'completed',
+                        'start_date' => now(),
+                        'end_date' => now(),
                     ]
                 );
 
-                // --- BUAT CLUB ---
-                $cleanClubName = preg_replace('/[^a-zA-Z0-9]/', '', $clubName);
-                if(empty($clubName)) $clubName = "Unknown Club"; 
-
+                // 5. BUAT CLUB
                 $club = Club::firstOrCreate(
-                    ['name' => $clubName], 
+                    ['name' => $clubName],
                     [
-                        'city'     => $city ?? 'Unknown', 
+                        'city' => $city,
                         'province' => $province,
-                        'email'    => strtolower($cleanClubName) . $count . '@dummy.com',
-                        'address'  => 'Alamat import',
-                        'phone'    => '000000',
-                        'password' => Hash::make('password123') 
+                        'email' => strtolower(Str::slug($clubName)) . $count . '@swim.id',
+                        'password' => Hash::make('password123'),
+                        'address' => 'Imported Address',
+                        'phone' => '0000',
                     ]
                 );
 
-                // --- BUAT ATLET ---
-                Athlete::updateOrCreate(
-                    ['id' => $customId],
+                // 6. PERBAIKAN UTAMA: BUAT ATLET (Menghindari ID Kosong)
+                $athleteSearchKey = [];
+                if (!empty($customId) && is_numeric($customId)) {
+                    // Jika ada NISNAS/ID, gunakan itu sebagai kunci
+                    $athleteSearchKey = ['id' => $customId];
+                } else {
+                    // Jika ID kosong (seperti error Lovely Quinsha tadi), 
+                    // cari berdasarkan Nama + Tgl Lahir agar tidak duplikat
+                    $athleteSearchKey = [
+                        'name' => $name, 
+                        'birth_date' => $birthDate
+                    ];
+                }
+
+                $athlete = Athlete::updateOrCreate(
+                    $athleteSearchKey,
                     [
-                        'name'           => $name, 
-                        'birth_date'     => $birthDate,
-                        'gender'         => 'Male', 
-                        'place_of_birth' => $city,
-                        'club_id'        => $club->id,
+                        'name' => $name,
+                        'birth_date' => $birthDate,
+                        'club_id' => $club->id,
+                        'gender' => 'Male', 
                     ]
                 );
 
-                // --- BUAT PRESTASI ---
+                // 7. BUAT PRESTASI
                 Achievement::updateOrCreate(
                     [
-                        'athlete_id' => $customId,
+                        'athlete_id' => $athlete->id,
                         'event_id'   => $event->id,
                         'position'   => $rank,
                     ],
                     [
                         'club_id'      => $club->id,
                         'record_value' => $result,
-                        'fina_point'   => $fp,
-                        'date'         => now(),
+                        'fina_point'   => (int)$fp,
                         'medal'        => ($rank == 1 ? 'Gold' : ($rank == 2 ? 'Silver' : ($rank == 3 ? 'Bronze' : null))),
+                        'date'         => now(),
                     ]
                 );
 
                 $count++;
             }
-            
+
             DB::commit();
             fclose($handle);
-            $this->command->info("SUKSES: $count atlet & prestasi berhasil diimport!");
+            $this->command->info("Berjaya import $count data dari $type.");
 
         } catch (\Exception $e) {
             DB::rollBack();
-            $this->command->error("Gagal: " . $e->getMessage());
+            $this->command->error("Ralat pada fail $type: " . $e->getMessage());
         }
     }
 }

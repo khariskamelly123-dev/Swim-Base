@@ -5,16 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'SwimBase Dashboard')</title>
 
-    {{-- 1. TAILWIND CSS & FONTAWESOME (Wajib ada) --}}
+    {{-- Tailwind & Icons --}}
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
-    {{-- 2. FONT & CUSTOM STYLE --}}
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         
-        /* Custom Scrollbar untuk sidebar & konten */
         .custom-scrollbar::-webkit-scrollbar { width: 5px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
@@ -25,68 +23,65 @@
 
 <body class="bg-gray-50 text-gray-800 antialiased overflow-hidden">
 
-    {{-- WRAPPER UTAMA: Flex Column (Header di atas, Sisanya di bawah) --}}
+    {{-- WRAPPER UTAMA --}}
     <div class="flex flex-col h-screen">
 
-        {{-- A. HEADER HITAM (Global Topbar) --}}
-        {{-- Menggunakan Tailwind: h-16 (64px), bg-black, flex, dll --}}
+        {{-- 1. HEADER ATAS (Global Topbar) --}}
         <nav class="h-16 bg-black px-8 flex justify-between items-center flex-shrink-0 z-50">
             {{-- Logo --}}
             <div class="flex items-center gap-3">
-                {{-- Fallback jika gambar logo tidak ada, pakai icon --}}
-                @if(file_exists(public_path('images/logo.png')))
-                    <img src="{{ asset('images/logo.png') }}" class="h-8">
-                @else
-                    <i class="fas fa-swimmer text-white text-2xl"></i>
-                @endif
-                <span class="text-white text-xl font-bold tracking-tight">Swim Base</span>
+                <img src="{{ asset('images/logo.png') }}" class="h-8" onerror="this.src='https://ui-avatars.com/api/?name=SB&background=D92323&color=fff'">
+                <span class="text-white text-xl font-bold tracking-tight">Swim Base <span class="text-red-600">ID</span></span>
             </div>
 
-            {{-- Search Bar (Header Atas) --}}
-            <div class="hidden md:flex items-center gap-3 text-white bg-gray-900 px-4 py-1.5 rounded-full border border-gray-700">
-                <i class="fas fa-search text-gray-400 text-sm"></i>
-                <input type="search" placeholder="Search..." class="bg-transparent border-none text-sm text-white focus:ring-0 focus:outline-none w-48 placeholder-gray-500">
+            {{-- Search & Info --}}
+            <div class="flex items-center gap-6">
+                <div class="hidden md:flex items-center gap-3 text-white bg-gray-900 px-4 py-1.5 rounded-full border border-gray-700">
+                    <i class="fas fa-search text-gray-400 text-sm"></i>
+                    <input type="search" placeholder="Cari data..." class="bg-transparent border-none text-sm text-white focus:ring-0 focus:outline-none w-48 placeholder-gray-500">
+                </div>
+                {{-- Status User --}}
+                <div class="text-white text-xs font-medium bg-gray-800 px-3 py-1 rounded-md border border-gray-700">
+                    Mode: 
+                    @if(auth()->guard('super_admin')->check()) Super Admin
+                    @elseif(auth()->guard('admin')->check()) Admin Event
+                    @elseif(auth()->guard('club')->check()) Klub
+                    @else Institusi @endif
+                </div>
             </div>
         </nav>
 
-        {{-- B. AREA BAWAH (Sidebar + Main Content) --}}
-        {{-- flex-1 artinya mengisi sisa ruang di bawah header --}}
+        {{-- 2. AREA TENGAH (Sidebar + Content) --}}
         <div class="flex flex-1 overflow-hidden">
             
-            {{-- 1. SIDEBAR (Dynamic Include) --}}
-            @auth
-                @if(Auth::user()->role == 'admin')
-                    @include('layouts.sidebar.admin')
-                
-                @elseif(Auth::user()->role == 'club' || Auth::user()->role == 'klub')
-                    @include('layouts.sidebar.club')
-
-                @elseif(Auth::user()->role == 'sekolah')
-                    @include('layouts.sidebar.sekolah')
-                    
-                @elseif(Auth::user()->role == 'superadmin')
-                    @include('layouts.sidebar.superadmin')
-                
-                @else
-                    {{-- Default fallback --}}
-                    @include('layouts.sidebar.club') 
-                @endif
-            @else
-                {{-- Development fallback --}}
+            {{-- SIDEBAR DINAMIS --}}
+            @if(auth()->guard('super_admin')->check())
+                @include('layouts.sidebar.super_admin')
+            @elseif(auth()->guard('admin')->check())
+                @include('layouts.sidebar.admin')
+            @elseif(auth()->guard('club')->check())
                 @include('layouts.sidebar.club')
-            @endauth
+            @elseif(auth()->guard('institution')->check())
+                @include('layouts.sidebar.institution')
+            @endif
 
-            {{-- 2. CONTENT AREA (Scrollable) --}}
-            <div class="flex-1 flex flex-col overflow-hidden relative bg-[#F9FAFB]">
-                {{-- Konten halaman akan masuk ke sini --}}
-                {{-- Tambahkan overflow-y-auto agar bisa discroll --}}
-                <div class="flex-1 overflow-y-auto custom-scrollbar">
+            {{-- CONTENT AREA --}}
+            <div class="flex-1 flex flex-col overflow-hidden bg-[#F9FAFB]">
+                <main class="flex-1 overflow-y-auto custom-scrollbar">
+                    {{-- Pesan Alert Global (Optional) --}}
+                    @if(session('success'))
+                        <div class="mx-8 mt-4 p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl flex items-center gap-3 text-sm">
+                            <i class="fas fa-check-circle"></i> {{ session('success') }}
+                        </div>
+                    @endif
+
                     @yield('content')
-                </div>
+                </main>
             </div>
 
         </div>
     </div>
 
+    @yield('scripts')
 </body>
 </html>

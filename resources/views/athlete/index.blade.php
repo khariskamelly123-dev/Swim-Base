@@ -95,13 +95,13 @@
 
                                 {{-- Tombol Request Hapus --}}
                                 {{-- UPDATE: Route athlete.submit_delete --}}
-                                <form action="{{ route('athlete.submit_delete', $athlete->id) }}" method="POST" 
-                                      onsubmit="return confirm('Ajukan penghapusan atlet ini ke Admin?');">
-                                    @csrf
-                                    <button type="submit" class="p-2 text-red-500 hover:bg-red-50 rounded-lg" title="Ajukan Hapus">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </form>
+                               {{-- Form untuk Delete --}}
+<form action="{{ route('athlete.submit_delete', $athlete->id) }}" method="POST">
+    @csrf
+    <button type="submit" onclick="return confirm('Apakah Anda yakin ingin mengajukan penghapusan atlet ini?')">
+        Hapus
+    </button>
+</form>
 
                             </div>
                         </td>

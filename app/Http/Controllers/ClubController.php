@@ -43,7 +43,7 @@ class ClubController extends Controller
             $club = Auth::guard('club')->user();
             // session(['club_name' => $club->name]); 
 
-            return redirect()->route('club.dashboard')->with('success', 'Login successful! Welcome back.');
+            return redirect()->route('dashboard.club')->with('success', 'Login successful! Welcome back.');
         }
 
         // 3. Jika Gagal

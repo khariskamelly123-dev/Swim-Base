@@ -6,11 +6,11 @@
     $guardName = 'web'; // Default guard
 
     // 1. CEK SUPER ADMIN
-    if (auth()->guard('super_admin')->check()) {
-        $user = auth()->guard('super_admin')->user();
-        $role = 'super_admin';
+    if (auth()->guard('superadmin')->check()) {
+        $user = auth()->guard('superadmin')->user();
+        $role = 'superadmin';
         $displayName = $user->name ?? 'Super Administrator';
-        $guardName = 'super_admin';
+        $guardName = 'superadmin';
         
         // Style: Purple
         $badgeText = 'Master Control';
@@ -87,10 +87,10 @@
         {{-- ===============================================================
              1. MENU SUPER ADMIN
              =============================================================== --}}
-        @if($role === 'super_admin')
+        @if($role === 'superadmin')
             
             <p class="px-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest mt-2 mb-2">Dashboard</p>
-            <a href="{{ route('super.dashboard') }}" class="nav-item {{ request()->routeIs('super.dashboard') ? 'active-purple' : '' }}">
+            <a href="{{ route('superadmin.dashboard') }}" class="nav-item {{ request()->routeIs('super.dashboard') ? 'active-purple' : '' }}">
                 <i class="fas fa-chart-pie w-6 text-center"></i> Overview
             </a>
 
