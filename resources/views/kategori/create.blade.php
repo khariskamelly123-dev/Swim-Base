@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'Create Klub - Swim Base')
+@section('title', 'Create kategori - Swim Base')
 
 @section('content')
 
@@ -9,8 +9,8 @@
 
         {{-- Header --}}
         @include('layouts.header', [
-        'title' => 'Create Klub',
-    ])
+    'title' => 'Create Kategori',
+])
 
         <style>
             .content-wrapper {
@@ -94,21 +94,31 @@
 
         <div class="content-wrapper">
             <div class="card">
-                <h2>Create Hasil dan Rekor</h2>
-
+                <h2>Kategori</h2>
+<!--No, Kode, Nama Kategori, Batas Umur, Gender, Aksi-->
                 <form action="#" method="POST">
                     @csrf
                     @method('PUT')
 
                     <div class="form-group">
-                        <label for="nama_klub">Nama Klub</label>
-                        <input type="text" id="nama_klub" name="nama_klub">
+                        <label for="kode">Kode</label>
+                        <input type="text" id="kode" name="kode">
                     </div>
 
                     <div class="form-group">
-                        <label for="kota">Kota</label>
-                        <input type="text" id="kota" name="kota" >
-                    </div> 
+                        <label for="nama_kategori">Nama Kategori</label>
+                        <input type="text" id="nama_kategori" name="nama_kategori">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="batas_umur">Batas Umur</label>
+                        <input type="text" id="batas_umur" name="batas_umur">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <input type="text" id="gender" name="gender">
+                    </div>
 
                     <div class="btn-wrapper">
                         <button type="submit" class="btn-save">Buat</button>

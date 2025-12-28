@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'Edit Klub - Swim Base')
+@section('title', 'Create hasil dan rekor - Swim Base')
 
 @section('content')
 
@@ -9,14 +9,11 @@
 
     {{-- Header --}}
     @include('layouts.header', [
-        'title' => 'Edit Klub'
+        'title' => 'Create Hasil dan Rekor',
     ])
 
     <style>
-        /* ===== WRAPPER ===== 
-        *   /
         .content-wrapper {
-            margin-left: 250px; /* sesuaikan dengan lebar sidebar */
             padding: 30px;
             background-color: #f4f6f8;
             min-height: 100vh;
@@ -97,24 +94,39 @@
 
     <div class="content-wrapper">
         <div class="card">
-            <h2>Edit Klub</h2>
+            <h2>Create Hasil dan Rekor</h2>
 
             <form action="#" method="POST">
                 @csrf
                 @method('PUT')
 
                 <div class="form-group">
-                    <label for="nama_klub">Nama Klub</label>
-                    <input type="text" id="nama_klub" name="nama_klub">
+                    <label for="nama_atlet">Nama Atlet</label>
+                    <input type="text" id="nama_atlet" name="nama_atlet" value="TI UNSIQ">
                 </div>
 
                 <div class="form-group">
-                    <label for="kota">Kota</label>
-                    <input type="text" id="kota" name="kota">
+                    <label for="event">Event</label>
+                    <input type="text" id="event" name="event" value="TI UNSIQ">
+                </div>
+
+                <div class="form-group">
+                    <label for="nomor_lomba">Nomor Lomba</label>
+                    <input type="text" id="nomor_lomba" name="nomor_lomba" value="TI UNSIQ">
+                </div>
+
+                <div class="form-group">
+                    <label for="waktu">Waktu</label>
+                    <input type="text" id="waktu" name="waktu" value="TI UNSIQ">
+                </div>
+
+                <div class="form-group">
+                    <label for="tanggal">Tanggal</label>
+                    <input type="date" id="tanggal" name="tanggal" value="{{ date('Y-m-d') }}">
                 </div>
 
                 <div class="btn-wrapper">
-                    <button type="submit" class="btn-save">simpan</button>
+                    <button type="submit" class="btn-save">Buat</button>
                 </div>
             </form>
         </div>
